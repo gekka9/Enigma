@@ -20,37 +20,40 @@ public class Console extends JPanel{
   private Status status;
   private ClientModel model;
   
-  public Console(Status status,Tweet tweet){
-    this.tweet=tweet;
-    this.status=status;
-    this.model=tweet.getClientModel();
+  public Console(ClientModel model){
+    super();
     this.setPreferredSize(new Dimension(80,80));
     this.setMaximumSize(new Dimension(80,80));
-    //this.setOpaque(false);
     this.setLayout(new FlowLayout());
     this.add(createRTButton());
     this.add(createReButton());
     this.add(createFavButton());
     this.add(createOtherButton());
   }
+  
+  public Console(Status status,Tweet tweet){
+    this.tweet=tweet;
+    this.status=status;
+    this.model=tweet.getClientModel();
+  }
   private JButton createRTButton(){
     JButton button = new JButton(new ImageIcon("./gui/rt.png") );
     button.setPreferredSize(new Dimension(32,32));
     button.setMaximumSize(new Dimension(32,32));
-    button.addActionListener(new ReTweet(this.status,this.model.getTwitter()));
+    button.addActionListener(new ReTweet());
     return button;
   }
   private JButton createReButton(){
     JButton button = new JButton(new ImageIcon("./gui/re.png") );
     button.setPreferredSize(new Dimension(32,32));
     button.setMaximumSize(new Dimension(32,32));
-    button.addActionListener(new Reply(this.status,this.model.getFrame().getPostField()));
+    button.addActionListener(new Reply());
     return button;
   } private JButton createFavButton(){
     JButton button = new JButton(new ImageIcon("./gui/Fav.png") );
     button.setPreferredSize(new Dimension(32,32));
     button.setMaximumSize(new Dimension(32,32));
-    button.addActionListener(new Favorite(this.status,this.model.getTwitter()));
+    button.addActionListener(new Favorite());
     return button;
   } private JButton createOtherButton(){
     JButton button = new JButton(new ImageIcon("./gui/other.png") );
@@ -62,8 +65,10 @@ public class Console extends JPanel{
   class ReTweet implements ActionListener{
     private Status status;
     private Twitter twitter;
-    public ReTweet(Status status,Twitter twitter){
+    public ReTweet(){
       super();
+    }
+    public void setStatus(Status status,Twitter twitter){
       this.twitter=twitter;
       this.status=status;
     }
@@ -83,8 +88,12 @@ public class Console extends JPanel{
   class Reply implements ActionListener{
     private Status status;
     private PostField field;
-    public Reply(Status status,PostField field){
+    
+    public Reply(){
       super();
+    }
+    
+    public void setStatus(Status status,PostField field){
       this.field=field;
       this.status=status;
     }
@@ -97,8 +106,12 @@ public class Console extends JPanel{
   class Favorite implements ActionListener{
     private Status status;
     private Twitter twitter;
-    public Favorite(Status status,Twitter twitter){
+    
+    public Favorite(){
       super();
+    }
+    
+    public void setStatus(Status status,Twitter twitter){
       this.twitter=twitter;
       this.status=status;
     }

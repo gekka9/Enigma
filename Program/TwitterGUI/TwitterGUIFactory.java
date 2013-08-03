@@ -16,5 +16,9 @@ public class TwitterGUIFactory {
   public ClientModel getClientModel(){
     return this.model;
   }
+  
+  public MainFrame getMainFrame(){
+    return this.frame;
+  }
 
 }
