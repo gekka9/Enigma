@@ -1,4 +1,4 @@
-package client;
+package enigma;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
 import TwitterGUI.ClientModel;
 import TwitterGUI.MainFrame;
@@ -80,10 +81,15 @@ public class Example
     }
     //twitter.setOAuthConsumer(KEY, SECRET);
     twitter.setOAuthAccessToken(accessToken);
+    TwitterGUIFactory GUIfactory= new TwitterGUIFactory(twitter);
+    MainFrame frame = GUIfactory.getMainFrame();
+    List<Status> statuses = twitter.getHomeTimeline();
+    for (Status status : statuses) {
+        frame.addPost(status);
+    }
     TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(conf);
     TwitterStream twitterStream = twitterStreamFactory.getInstance();
-    TwitterGUIFactory GUIfactory= new TwitterGUIFactory(twitter);
-    twitterStream.addListener(new MyUserStreamAdapter(GUIfactory.getClientModel()));
+    twitterStream.addListener(new MyUserStreamAdapter(frame));
     twitterStream.setOAuthAccessToken(accessToken);
     twitterStream.user();
     
@@ -111,11 +117,11 @@ class MyUserStreamAdapter extends UserStreamAdapter
 {
   private static final Logger logger = Logger.getLogger(MyUserStreamAdapter.class);
 
-  private ClientModel model;
+  private MainFrame frame;
   private int count=0; 
   
-  public MyUserStreamAdapter(ClientModel model){
-    this.model=model;
+  public MyUserStreamAdapter(MainFrame frame){
+    this.frame=frame;
   }
   
   /*
@@ -127,7 +133,7 @@ class MyUserStreamAdapter extends UserStreamAdapter
     super.onStatus(status);
     
     //logger.info(status.getText() + " : " + status.getUser().getScreenName());
-    this.model.addPost(status);
+    this.frame.addPost(status);
     System.out.println(status.getText() + " : " + status.getUser().getScreenName()+" "+status.getUser().getName());
     System.out.println(count);
     count++;
