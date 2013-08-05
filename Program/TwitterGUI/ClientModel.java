@@ -1,6 +1,5 @@
 package TwitterGUI;
 
-import twitter4j.Status;
 import twitter4j.Twitter;
 
 public class ClientModel {

@@ -1,16 +1,11 @@
 package TwitterGUI;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.ScrollPane;
-
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 
 import twitter4j.Status;
 

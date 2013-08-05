@@ -3,7 +3,6 @@ package TwitterGUI;
 import java.awt.Dimension;
 
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

@@ -31,11 +31,6 @@ public class Console extends JPanel{
     this.add(createOtherButton());
   }
   
-  public Console(Status status,Tweet tweet){
-    this.tweet=tweet;
-    this.status=status;
-    this.model=tweet.getClientModel();
-  }
   private JButton createRTButton(){
     JButton button = new JButton(new ImageIcon("./gui/rt.png") );
     button.setPreferredSize(new Dimension(32,32));

@@ -2,25 +2,16 @@ package TwitterGUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.border.LineBorder;
 
 import twitter4j.Status;
 
@@ -28,9 +19,6 @@ public class Tweet extends JPanel{
 
   public static final int HEIGHT = 80;
   
-  private Status status;
-  private Contents contents;
-  private Console console;
   private ClientModel model;
   private JLabel iconLabel;
   private ImageIcon icon;
@@ -181,16 +169,16 @@ public class Tweet extends JPanel{
     
   }
   
-  public void setValues(Status status, ClientModel model,ImageIcon image){
+  public void setValues(Status status, ClientModel model,ImageIcon image,boolean isSelect){
     this.icon=image;
     this.iconLabel.setIcon(this.icon);
     this.name.setText(status.getUser().getName());
     this.text.setText(status.getText());
-  }
-  
-  public static void main(String[] args) {
-    // TODO Auto-generated method stub
-
+    if(isSelect){
+      this.setBackground(Color.blue);
+    }else{
+      this.setBackground(Color.red);
+    }
   }
 
   public ClientModel getClientModel() {
