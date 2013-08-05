@@ -17,8 +17,6 @@ public class ClientModel {
   public void setTwitter(Twitter twitter) {
     this.twitter = twitter;
   }
-  
-
   public MainFrame getFrame() {
     return frame;
   }

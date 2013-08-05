@@ -16,9 +16,10 @@ import javax.swing.JTextArea;
 import twitter4j.Status;
 
 public class Tweet extends JPanel{
-
-  public static final int HEIGHT = 80;
-  
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private ClientModel model;
   private JLabel iconLabel;
   private ImageIcon icon;
@@ -28,7 +29,8 @@ public class Tweet extends JPanel{
   private JButton reButton;
   private JButton favButton;
   private JButton otherButton;
-  
+  public static final int BUTTON_SIZE=32;
+  public static final int ICON_SIZE=80;
   
   public Tweet(){
     super();
@@ -47,8 +49,8 @@ public class Tweet extends JPanel{
     c.gridheight=4;
     iconLabel = new JLabel();
     icon=new ImageIcon();
-    iconLabel.setBounds(0, 0, 80, 80);
-    iconLabel.setPreferredSize(new Dimension(80,80));
+    iconLabel.setBounds(0, 0, ICON_SIZE, ICON_SIZE);
+    iconLabel.setPreferredSize(new Dimension(ICON_SIZE,ICON_SIZE));
     layout.setConstraints(iconLabel, c);
     this.add(iconLabel);
     
@@ -96,25 +98,25 @@ public class Tweet extends JPanel{
     this.add(console);
 
     rtButton = new JButton(new ImageIcon("./gui/rt.png") );
-    rtButton.setPreferredSize(new Dimension(32,32));
-    rtButton.setMaximumSize(new Dimension(32,32));
+    rtButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    rtButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     console.add(rtButton);
 
     reButton = new JButton(new ImageIcon("./gui/re.png") );
-    reButton.setPreferredSize(new Dimension(32,32));
-    reButton.setMaximumSize(new Dimension(32,32));
+    reButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    reButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     console.add(reButton);
     
 
     favButton = new JButton(new ImageIcon("./gui/fav.png") );
-    favButton.setPreferredSize(new Dimension(32,32));
-    favButton.setMaximumSize(new Dimension(32,32));
+    favButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    favButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     console.add(favButton);
     
 
     otherButton = new JButton(new ImageIcon("./gui/other.png") );
-    otherButton.setPreferredSize(new Dimension(32,32));
-    otherButton.setMaximumSize(new Dimension(32,32));
+    otherButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    otherButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     console.add(otherButton);
     
     
@@ -128,8 +130,8 @@ public class Tweet extends JPanel{
     c.weighty=0;
     c.fill=GridBagConstraints.NONE;
     rtButton = new JButton(new ImageIcon("./gui/rt.png") );
-    rtButton.setPreferredSize(new Dimension(32,32));
-    rtButton.setMaximumSize(new Dimension(32,32));
+    rtButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    rtButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     layout.setConstraints(rtButton, c);
     this.add(rtButton);
     
@@ -139,8 +141,8 @@ public class Tweet extends JPanel{
     c.gridwidth=2;
     c.gridheight=2;
     reButton = new JButton(new ImageIcon("./gui/re.png") );
-    reButton.setPreferredSize(new Dimension(32,32));
-    reButton.setMaximumSize(new Dimension(32,32));
+    reButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    reButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     layout.setConstraints(reButton, c);
     this.add(reButton);
     
@@ -150,8 +152,8 @@ public class Tweet extends JPanel{
     c.gridwidth=2;
     c.gridheight=2;
     favButton = new JButton(new ImageIcon("./gui/fav.png") );
-    favButton.setPreferredSize(new Dimension(32,32));
-    favButton.setMaximumSize(new Dimension(32,32));
+    favButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    favButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     layout.setConstraints(favButton, c);
     this.add(favButton);
     
@@ -161,8 +163,8 @@ public class Tweet extends JPanel{
     c.gridwidth=2;
     c.gridheight=2;
     othreButton = new JButton(new ImageIcon("./gui/other.png") );
-    othreButton.setPreferredSize(new Dimension(32,32));
-    othreButton.setMaximumSize(new Dimension(32,32));
+    othreButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    othreButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     layout.setConstraints(othreButton, c);
     this.add(othreButton);
     */

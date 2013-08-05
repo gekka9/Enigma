@@ -15,15 +15,21 @@ import twitter4j.TwitterException;
 
 public class Console extends JPanel{
 
-  public static final int WIDTH = Tweet.HEIGHT;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+  public static final int CONSOLE_SIZE=80;
+  public static final int BUTTON_SIZE=32;
+  /*
   private Tweet tweet;
   private Status status;
   private ClientModel model;
-  
+  */
   public Console(ClientModel model){
     super();
-    this.setPreferredSize(new Dimension(80,80));
-    this.setMaximumSize(new Dimension(80,80));
+    this.setPreferredSize(new Dimension(CONSOLE_SIZE,CONSOLE_SIZE));
+    this.setMaximumSize(new Dimension(CONSOLE_SIZE,CONSOLE_SIZE));
     this.setLayout(new FlowLayout());
     this.add(createRTButton());
     this.add(createReButton());
@@ -33,27 +39,27 @@ public class Console extends JPanel{
   
   private JButton createRTButton(){
     JButton button = new JButton(new ImageIcon("./gui/rt.png") );
-    button.setPreferredSize(new Dimension(32,32));
-    button.setMaximumSize(new Dimension(32,32));
+    button.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    button.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     button.addActionListener(new ReTweet());
     return button;
   }
   private JButton createReButton(){
     JButton button = new JButton(new ImageIcon("./gui/re.png") );
-    button.setPreferredSize(new Dimension(32,32));
-    button.setMaximumSize(new Dimension(32,32));
+    button.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    button.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     button.addActionListener(new Reply());
     return button;
   } private JButton createFavButton(){
     JButton button = new JButton(new ImageIcon("./gui/Fav.png") );
-    button.setPreferredSize(new Dimension(32,32));
-    button.setMaximumSize(new Dimension(32,32));
+    button.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    button.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     button.addActionListener(new Favorite());
     return button;
   } private JButton createOtherButton(){
     JButton button = new JButton(new ImageIcon("./gui/other.png") );
-    button.setPreferredSize(new Dimension(32,32));
-    button.setMaximumSize(new Dimension(32,32));
+    button.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    button.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     return button;
   }
   

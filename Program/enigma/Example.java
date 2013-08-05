@@ -9,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
-import TwitterGUI.ClientModel;
 import TwitterGUI.MainFrame;
 import TwitterGUI.TwitterGUIFactory;
 
@@ -19,21 +18,17 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
-import twitter4j.User;
 import twitter4j.UserStreamAdapter;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.internal.logging.Logger;
 
 public class Example
 {
   public static final String KEY = "5EHIcwWrFiKDJ19l2ceoDQ";
   public static final String SECRET = "yCm7uy1dJMUHG2HRYvozy5iuQ9WEuegssmlBpv6I4";
   public static final String ACCESS_FILENAME="access.obj"; 
-  private AccessToken accessToken;
-  
   public static void main(String[] args) throws Exception{
     Example stream = new Example();
     stream.startUserStream();
@@ -115,7 +110,6 @@ public class Example
  */
 class MyUserStreamAdapter extends UserStreamAdapter
 {
-  private static final Logger logger = Logger.getLogger(MyUserStreamAdapter.class);
 
   private MainFrame frame;
   private int count=0; 

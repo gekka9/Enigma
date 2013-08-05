@@ -11,6 +11,16 @@ import twitter4j.Status;
 
 public class MainFrame extends JFrame{
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+  private final static int MINIMUM_WIDTH=420;
+  private final static int MINIMUM_HEIGHT=600;
+  private final static int LOCATION_WIDTH=50;
+  private final static int LOCATION_HEIGHT=50;
+  private final static int SCROLLPANE_WIDTH=400;
+  private final static int SCROLLPANE_HEIGHT=600;
   private ClientModel model;
   private DefaultListModel listModel;
   private JList list;
@@ -19,10 +29,9 @@ public class MainFrame extends JFrame{
   public MainFrame(ClientModel model){
     this.model=model;
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-    this.setMinimumSize(new Dimension(420, 600));
-    //this.setMaximumSize(new Dimension(400, 600));
+    this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.setLocation(50,50);
+    this.setLocation(LOCATION_WIDTH,LOCATION_HEIGHT);
     this.postField=new PostField(this.model.getTwitter());
     this.getContentPane().add(this.postField);
   
@@ -30,9 +39,8 @@ public class MainFrame extends JFrame{
     this.list = new JList(this.listModel);
     this.list.setLayoutOrientation(JList.VERTICAL);
     this.list.setCellRenderer(new TweetRenderer());
-    //this.list.setBounds(0, 0, 400, 600);
     JScrollPane scrollPane = new JScrollPane(this.list);
-    scrollPane.setPreferredSize(new Dimension(400,600));
+    scrollPane.setPreferredSize(new Dimension(SCROLLPANE_WIDTH,SCROLLPANE_HEIGHT));
     this.getContentPane().add(scrollPane);
     this.pack();
     this.setVisible(true);
