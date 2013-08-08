@@ -5,6 +5,7 @@ import twitter4j.Twitter;
 public class ClientModel {
   private Twitter twitter;
   private MainFrame frame;
+  private PostField field;
 
   public ClientModel(Twitter twitter){
     this.setTwitter(twitter);
@@ -23,6 +24,13 @@ public class ClientModel {
 
   public void setFrame(MainFrame frame) {
     this.frame = frame;
+  }
+
+  public void setField(PostField field) {
+    this.field=field;
+  }
+  public PostField getField(){
+    return this.field;
   }
 
 }

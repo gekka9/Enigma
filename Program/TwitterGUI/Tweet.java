@@ -6,6 +6,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 public class Tweet extends JPanel{
   /**
@@ -25,6 +31,7 @@ public class Tweet extends JPanel{
   private ImageIcon icon;
   private JTextArea name;
   private JTextArea text;
+  private JTextArea footer;
   private JButton rtButton;
   private JButton reButton;
   private JButton favButton;
@@ -86,6 +93,22 @@ public class Tweet extends JPanel{
     layout.setConstraints(text, c);
     this.add(text);
     
+    //フッタ
+    c.gridx=4;
+    c.gridy=5;
+    c.gridwidth=12;
+    c.gridheight=1;
+    c.weightx=1;
+    //c.weighty=1;
+    c.insets = new Insets(0, 0, 3, 3);
+    footer = new JTextArea();
+    footer.setEditable(false);
+    footer.setLineWrap(true);
+    footer.setForeground(Color.black);
+    footer.setBackground(Color.green);
+    layout.setConstraints(footer, c);
+    this.add(footer);
+    
     
     c.gridx=16;
     c.gridy=0;
@@ -102,77 +125,31 @@ public class Tweet extends JPanel{
     this.add(console);
 
     rtButton = new JButton(new ImageIcon("./gui/rt.png") );
+    rtButton.setEnabled(true);
     rtButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     rtButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    rtButton.addActionListener(new ReTweet());
     console.add(rtButton);
 
     reButton = new JButton(new ImageIcon("./gui/re.png") );
+    reButton.setEnabled(true);
     reButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     reButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    reButton.addActionListener(new Reply());
     console.add(reButton);
     
 
     favButton = new JButton(new ImageIcon("./gui/fav.png") );
+    favButton.setEnabled(true);
     favButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     favButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
+    favButton.addActionListener(new Favorite());
     console.add(favButton);
     
-
     otherButton = new JButton(new ImageIcon("./gui/other.png") );
     otherButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     otherButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    console.add(otherButton);
-    
-    
-    /*
-    //RT
-    c.gridx=16;
-    c.gridy=0;
-    c.gridwidth=2;
-    c.gridheight=2;
-    c.weightx=0;
-    c.weighty=0;
-    c.fill=GridBagConstraints.NONE;
-    rtButton = new JButton(new ImageIcon("./gui/rt.png") );
-    rtButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    rtButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    layout.setConstraints(rtButton, c);
-    this.add(rtButton);
-    
-    //Re
-    c.gridx=18;
-    c.gridy=0;
-    c.gridwidth=2;
-    c.gridheight=2;
-    reButton = new JButton(new ImageIcon("./gui/re.png") );
-    reButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    reButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    layout.setConstraints(reButton, c);
-    this.add(reButton);
-    
-    //fav
-    c.gridx=16;
-    c.gridy=2;
-    c.gridwidth=2;
-    c.gridheight=2;
-    favButton = new JButton(new ImageIcon("./gui/fav.png") );
-    favButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    favButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    layout.setConstraints(favButton, c);
-    this.add(favButton);
-    
-    //other
-    c.gridx=18;
-    c.gridy=2;
-    c.gridwidth=2;
-    c.gridheight=2;
-    othreButton = new JButton(new ImageIcon("./gui/other.png") );
-    othreButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    othreButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    layout.setConstraints(othreButton, c);
-    this.add(othreButton);
-    */
-    
+    console.add(otherButton);  
   }
   
   public void setValues(Status status,String text, ClientModel model,ImageIcon image,boolean isSelect){
@@ -180,6 +157,19 @@ public class Tweet extends JPanel{
     this.iconLabel.setIcon(this.icon);
     this.name.setText(status.getUser().getName());
     this.text.setText(text);
+    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
+    this.footer.setText("from:"+TweetRenderer.source2clientName(status.getSource())+" at:"+sdf1.format(status.getCreatedAt()));
+    ActionListener[] listeners= this.reButton.getActionListeners();
+    Reply reply = (Reply) listeners[0];
+    reply.setStatus(status, model.getField());
+    
+    listeners= this.rtButton.getActionListeners();
+    ReTweet reTweet = (ReTweet) listeners[0];
+    reTweet.setStatus(status, model.getTwitter());
+    
+    listeners= this.favButton.getActionListeners();
+    Favorite favorite = (Favorite) listeners[0];
+    favorite.setStatus(status, model.getTwitter());
     if(isSelect){
       this.setBackground(Color.blue);
     }else{
@@ -189,6 +179,77 @@ public class Tweet extends JPanel{
 
   public ClientModel getClientModel() {
     return this.model;
+  }
+  class Reply implements ActionListener{
+    private Status status;
+    private PostField field;
+    public Reply(){
+      super();
+    }
+    public void setStatus(Status status,PostField field){
+      this.field=field;
+      this.status=status;
+    }
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+      this.field.setText("@"+status.getUser().getScreenName()+" "+this.field.getText());
+      this.field.setDestination(this.status);
+    }
+  }
+  
+  class ReTweet implements ActionListener{
+    private Status status;
+    private Twitter twitter;
+    public ReTweet(){
+      super();
+    }
+    public void setStatus(Status status,Twitter twitter){
+      this.twitter=twitter;
+      this.status=status;
+    }
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+      System.out.println("ae;gjilgkneqkltnqoipthjqe;k ;ithqoutynqkltnqoihtoq:i");
+      if(!this.status.isRetweetedByMe()){
+        try {
+          this.twitter.retweetStatus(this.status.getId());
+        } catch (TwitterException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      };
+    }
+  }
+  
+  class Favorite implements ActionListener{
+    private Status status;
+    private Twitter twitter;
+    
+    public Favorite(){
+      super();
+    }
+    
+    public void setStatus(Status status,Twitter twitter){
+      this.twitter=twitter;
+      this.status=status;
+    }
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+      if(!this.status.isFavorited()){
+        try {
+          this.twitter.createFavorite(this.status.getId());
+        } catch (TwitterException e) {
+          // TODO Auto-generated catch block
+          try {
+            this.twitter.destroyFavorite(this.status.getId());
+          } catch (TwitterException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
 }

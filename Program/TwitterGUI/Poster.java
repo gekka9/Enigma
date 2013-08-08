@@ -5,8 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 
-import enigma.Enigma;
-
 public class Poster implements KeyListener{
 
   private PostField field;

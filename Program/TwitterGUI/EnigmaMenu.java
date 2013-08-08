@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.DefaultListModel;
 
 class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
+  private static final long serialVersionUID = 1L;
   private DefaultListModel listModel;
   public EnigmaMenu(DefaultListModel listModel){
     this.listModel=listModel;

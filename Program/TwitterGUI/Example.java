@@ -1,13 +1,17 @@
 package TwitterGUI;
-import java.io.BufferedReader;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import TwitterGUI.EnigmaToken;
 import TwitterGUI.MainFrame;
@@ -29,8 +33,10 @@ public class Example
 {
   public static final String KEY = "5EHIcwWrFiKDJ19l2ceoDQ";
   public static final String SECRET = "yCm7uy1dJMUHG2HRYvozy5iuQ9WEuegssmlBpv6I4";
-  public static final String ACCESS_FILENAME="access.obj"; 
+  public static final String ACCESS_FILENAME="resource/access.obj"; 
   public static void main(String[] args) throws Exception{
+    File newdir = new File("./resource");
+    newdir.mkdir();
     Example stream = new Example();
     stream.startUserStream();
   }
@@ -44,7 +50,6 @@ public class Example
     builder.setOAuthConsumerKey(KEY);
     builder.setOAuthConsumerSecret(SECRET);
     AccessToken accessToken=null;
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     Configuration conf = builder.build();
     TwitterFactory factory = new TwitterFactory(conf);
     Twitter twitter= factory.getInstance(); 
@@ -57,10 +62,28 @@ public class Example
     }catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
       RequestToken requestToken = twitter.getOAuthRequestToken();
+      /*
       System.out.println("Open the following URL and grant access to your account:");
       System.out.println(requestToken.getAuthorizationURL());
       System.out.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
       String pin = br.readLine();
+      */
+      JFrame frame = new JFrame();
+      JOptionPane.showMessageDialog(frame, "OKボタンを押すと、ブラウザで認証ページを開きます。\n認証後に表示されたPINコードを入力してください。");
+      Desktop desktop = Desktop.getDesktop();
+      String uriString = requestToken.getAuthorizationURL();
+      try {
+        URI uri = new URI(uriString);
+        desktop.browse(uri);
+      } catch (URISyntaxException e1) {
+        e1.printStackTrace();
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
+      String pin = JOptionPane.showInputDialog("PINコードを入力してください");
+      if (pin == null){
+        System.exit(1);
+      }
       try{
          if(pin.length() > 0){
            accessToken = twitter.getOAuthAccessToken(requestToken, pin);
@@ -81,10 +104,12 @@ public class Example
     twitter.setOAuthAccessToken(accessToken);
     TwitterGUIFactory GUIfactory= new TwitterGUIFactory(twitter);
     MainFrame frame = GUIfactory.getMainFrame();
+    /*
     List<Status> statuses = twitter.getHomeTimeline();
     for (Status status : statuses) {
         frame.addPost(status);
     }
+    */
     TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(conf);
     TwitterStream twitterStream = twitterStreamFactory.getInstance();
     twitterStream.addListener(new MyUserStreamAdapter(frame));
@@ -129,7 +154,6 @@ class MyUserStreamAdapter extends UserStreamAdapter
   public void onStatus(Status status)
   {
     super.onStatus(status);
-    
     //logger.info(status.getText() + " : " + status.getUser().getScreenName());
     this.frame.addPost(status);
     System.out.println(status.getText() + " : " + status.getUser().getScreenName()+" "+status.getUser().getName());

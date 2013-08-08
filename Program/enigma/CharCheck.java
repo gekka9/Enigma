@@ -3,72 +3,64 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import enigma.Enigma.Mode;
 
 
 public class CharCheck {
 
-  /**
-   * @param args
-   * @throws IOException 
-   */
-  public static void main(String[] args) throws IOException {
-    File file = new File("first.txt");
-    BufferedReader br = new BufferedReader(new FileReader(file));
-    String str = br.readLine();
-    StringBuilder builder = new StringBuilder();
-    while(str != null){
-      //System.out.println(str);
-      builder.append(str);
-      str = br.readLine();
-    }
-
-    br.close();
-    char[] target = builder.toString().toCharArray();
-    for(char aChar:target){
-      System.out.println(aChar+":"+check(aChar));
-    }
-
-    //System.out.println(checkChar("𠮟"));
-  }
-  /**
-   * 文字種チェック.
-   * @param target チェック対象文字列
-   * @return 文字種不正 false
-   */
-  public static boolean check(final char target){
-   
-      char c = target;
-      int targetChar = getSJISByte(c);
+  //文字種のチェックを行うクラス
+  public static Enigma.Mode check(final char target){
+      int targetChar = getSJISByte(target);
+      
+      //半角数字
+      Pattern p = Pattern.compile("[0-9]");
+      Matcher m = p.matcher(String.valueOf(target));
+      if(m.matches()){
+        return Mode.NUMBER;
+      }
+      
+      //半角アルファベット
+      p = Pattern.compile("[a-z|A-Z]");
+      m = p.matcher(String.valueOf(target));
+      if(m.matches()){
+        return Mode.ALPHABET;
+      }
       //つついてはいけないユニコードの闇
       if(targetChar == 0x3f){
-        System.out.println("????????????????????");
-        return false;
+        return Mode.OTHER;
+      }
+      //半角カナ
+      else if((0xA6 <= targetChar) && (targetChar <= 0xDD)) {
+        return Mode.KATAKANA;
       }
       //全角の0~9
       else if((0x824F <= targetChar) && (targetChar <= 0x8258)) {
-        return true;
+        return Mode.NUMBER;
       }
       //全角のA~Z
       else if((0x8260 <= targetChar) && (targetChar <= 0x8279)) {
-        return true;
+        return Mode.ALPHABET;
       }
       //全角のa~z
       else if((0x8281 <= targetChar) && (targetChar <= 0x829a)) {
-        return true;
+        return Mode.ALPHABET;
       }
       //ぁ〜ん
       else if((0x829f <= targetChar) && (targetChar <= 0x82f1)) {
-        return true;
+        return Mode.HIRAGANA;
       }
       //ァ〜ヶ
       else if((0x8340 <= targetChar) && (targetChar <= 0x8396)) {
-        return true;
+        return Mode.KATAKANA;
       }
       //第一水準
       else if((0x889f <= targetChar) && (targetChar <= 0x9872)) {
-        return true;
+        return Mode.KANJI;
       }else{
-        return false;
+        return Mode.OTHER;
       }
   }
    
@@ -89,12 +81,28 @@ public class CharCheck {
           } else {
               //2バイト文字
               targetChar = ((bArray[0] & 0xFF) << 8) | (bArray[1] & 0xFF);
-
           }
           return targetChar;
       } catch (Exception e) {
           return 0;
       }
   }
-
+  
+  //テスト用クラス
+  public static void main(String[] args) throws IOException {
+    File file = new File("first.txt");
+    BufferedReader br = new BufferedReader(new FileReader(file));
+    String str = br.readLine();
+    StringBuilder builder = new StringBuilder();
+    while(str != null){
+      //System.out.println(str);
+      builder.append(str);
+      str = br.readLine();
+    }
+    br.close();
+    char[] target = builder.toString().toCharArray();
+    for(char aChar:target){
+      System.out.println(aChar+":"+check(aChar));
+    }
+  }
 }

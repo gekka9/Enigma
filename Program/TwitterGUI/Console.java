@@ -48,7 +48,7 @@ public class Console extends JPanel{
     JButton button = new JButton(new ImageIcon("./gui/re.png") );
     button.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     button.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
-    button.addActionListener(new Reply());
+    //button.addActionListener(new Reply());
     return button;
   } private JButton createFavButton(){
     JButton button = new JButton(new ImageIcon("./gui/Fav.png") );
@@ -86,23 +86,6 @@ public class Console extends JPanel{
     }
   }
   
-  class Reply implements ActionListener{
-    private Status status;
-    private PostField field;
-    
-    public Reply(){
-      super();
-    }
-    
-    public void setStatus(Status status,PostField field){
-      this.field=field;
-      this.status=status;
-    }
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
-      this.field.setText("@"+status.getUser().getScreenName()+" "+this.field.getText());
-    }
-  }
   
   class Favorite implements ActionListener{
     private Status status;
