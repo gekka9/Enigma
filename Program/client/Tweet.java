@@ -1,4 +1,4 @@
-package TwitterGUI;
+package client;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -209,7 +209,6 @@ public class Tweet extends JPanel{
     }
     @Override
     public void actionPerformed(ActionEvent arg0) {
-      System.out.println("ae;gjilgkneqkltnqoipthjqe;k ;ithqoutynqkltnqoihtoq:i");
       if(!this.status.isRetweetedByMe()){
         try {
           this.twitter.retweetStatus(this.status.getId());

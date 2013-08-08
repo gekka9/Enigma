@@ -1,4 +1,4 @@
-package TwitterGUI;
+package client;
 
 
 import java.io.Serializable;

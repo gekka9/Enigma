@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: enigma.Example
+Main-Class: client.Example

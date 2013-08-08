@@ -1,4 +1,4 @@
-package TwitterGUI;
+package client;
 
 import java.awt.Component;
 import java.awt.Image;
@@ -63,7 +63,6 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
         try {
           SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
           String[] date = sdf.format(tweetData.status.getCreatedAt()).split("/");
-          System.out.println(date[0]+" : "+date[1]);
           this.initialize(Long.parseLong(date[0]), Integer.parseInt(date[1]));
         } catch (IOException e) {
           // TODO Auto-generated catch block

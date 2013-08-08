@@ -1,4 +1,4 @@
-package TwitterGUI;
+package client;
 
 import java.awt.Dimension;
 import java.io.IOException;
@@ -48,7 +48,6 @@ public class PostField extends JTextArea{
   public void post() throws IOException{
     if(this.getText().length() <POST_LENGTH && 0<this.getText().length() ){
       String postText = this.getText();
-      System.out.println("post: " +postText);
       boolean isReply=false;
       if (postText.indexOf("@"+this.destUser) != -1) {
           isReply = true;
@@ -56,7 +55,6 @@ public class PostField extends JTextArea{
       try {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
         String[] date = sdf.format(new Date()).split("/");
-        System.out.println(date[0]+" : "+date[1]);
         this.initialize(Long.parseLong(date[0]), Integer.parseInt(date[1]));
         String[] targetList = postText.split(" ");
         ArrayList<String> resultList=new ArrayList<String>();
@@ -99,7 +97,6 @@ public class PostField extends JTextArea{
         }
         resultText = "";
         for(String aString : resultList){
-          System.out.println("fnaoiegneql/k ntaeithbarlgna/egfhea:oh"+aString);
           if(count != 0){
             resultText+=" ";
           }

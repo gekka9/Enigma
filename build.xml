@@ -2,12 +2,12 @@
 
 <project name="Enigma" default="all" basedir=".">
 
-    <property name="GUIpackage" value="TwitterGUI" />
+    <property name="clientPackage" value="client" />
     <property name="package" value="enigma" />
     <property name="resourcedir" value="resource" />
     <property name="EnigmaPackage" value="enigma" />
     <property name="lib" value="lib" />
-    <property name="packagenames" value="${EnigmaPackage},${GUIpackage}" />
+    <property name="packagenames" value="${EnigmaPackage},${clientPackage}" />
     <property name="destdir" value="./Classes" />
     <property name="docdir" value="./JavaDoc" />
     <property name="instdir" value="./${ant.project.name}.app/Contents/Resources/Java" />

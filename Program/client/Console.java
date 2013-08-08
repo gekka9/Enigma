@@ -1,4 +1,4 @@
-package TwitterGUI;
+package client;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

@@ -1,4 +1,4 @@
-package TwitterGUI;
+package client;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,9 +13,10 @@ import java.net.URISyntaxException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import TwitterGUI.EnigmaToken;
-import TwitterGUI.MainFrame;
-import TwitterGUI.TwitterGUIFactory;
+import client.EnigmaToken;
+import client.MainFrame;
+import client.TwitterGUIFactory;
+
 
 import twitter4j.Status;
 import twitter4j.Twitter;

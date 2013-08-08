@@ -1,4 +1,4 @@
-package TwitterGUI;
+package client;
 
 import java.awt.*;
 import java.awt.event.*;
