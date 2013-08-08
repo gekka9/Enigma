@@ -88,22 +88,22 @@ public class Rotor {
     File file=null;
     switch(this.mode){
     case ALPHABET : 
-      file = new File("strings/alphabet.txt");
+      file = new File("./strings/alphabet.txt");
       break;
     case HIRAGANA :
-      file = new File("strings/hiragana.txt");
+      file = new File("./strings/hiragana.txt");
       break;
     case KATAKANA :
-      file = new File("strings/katakana.txt");
+      file = new File("./strings/katakana.txt");
       break;
     case KANJI :
-      file = new File("strings/kanji.txt");
+      file = new File("./strings/kanji.txt");
       break;
     case NUMBER :
-      file = new File("strings/number.txt");
+      file = new File("./strings/number.txt");
       break;
     default:
-      file = new File("strings/alphabet.txt");
+      file = new File("./strings/alphabet.txt");
       break;
     }
     BufferedReader br = new BufferedReader(new FileReader(file));

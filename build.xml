@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- プロジェクトについて
-    project name : プロジェクトの名前
-         default : make とだけ入力されたときに実行するタスク名の指定
-         basedir : 相対パスに用いる dir をこのファイル（build.xml）がある dir に指定
--->
 <project name="Enigma" default="all" basedir=".">
 
-    <!-- これ以降の処理で使用する文字列を定数として定義 -->
     <property name="GUIpackage" value="TwitterGUI" />
     <property name="package" value="enigma" />
+    <property name="resourcedir" value="resource" />
     <property name="EnigmaPackage" value="enigma" />
     <property name="lib" value="lib" />
     <property name="packagenames" value="${EnigmaPackage},${GUIpackage}" />
@@ -19,34 +14,23 @@
     <property name="copyright" value="Copyright 2013 gekka9." />
     <property name="zipname" value="${ant.project.name}" />
     
-    <!-- タイムスタンプ設定 -->
     <tstamp>
         <format property="Date" pattern="yyyy/MM/dd" /> <!-- 日付のフォーマット 西暦/月/日 で指定 -->
         <format property="Time" pattern="HH:mm:ss" /> <!-- 時間のフォーマット 時/分/秒 で指定 -->
     </tstamp>
     
-    <!-- ターゲットについて
-            name : ターゲットの名前
-         depends : 依存するターゲット名
-     description : ターゲットの概要
-    -->
-
-    <!-- ビルドの完了。jarに依存(jar 後に実行) -->
     <target name="all" depends="jar" description="build all">
-        <echo>on ${Date} at ${Time}</echo>  <!-- タイムスタンプを表示 -->
+        <echo>on ${Date} at ${Time}</echo>
     </target>
 
-    <!-- コンパイルのための準備。依存していないため最初に実行 --> 
     <target name="prepare" depends="" description="prepare to compile">
-        <mkdir dir="${destdir}" /> <!-- カレントディレクトリに Classes ディレクトリを作成 -->
+        <mkdir dir="${destdir}" /> 
         
-        <echo> on ${Date} at ${Time} </echo> <!-- タイムスタンプの表示 -->
+        <echo> on ${Date} at ${Time} </echo>
     </target>   
     
-    <!-- コンパイル。 prepare 依存(prepare 後に実行) -->
     <target name="compile" depends="prepare" description="compile all sources">
     
-        <!-- コンパイルにおける設定 -->
         <javac
             fork="true"               
             srcdir="${basedir}"       
@@ -56,20 +40,8 @@
             deprecation="on"          
             verbose="false"> 
             
-        <!-- 
-             •実行を別の java仮想マシンで行う 
-             •ソースファイルの格納ディレクトリを指定
-             •クラスファイルを保存するディレクトリを指定
-             •Ant のランタイムライブラリをクラスパスに含む
-             •エンコード形式の指定
-             •推奨されないクラスやメンバが使用される際警告を行う
-             •実行過程で生まれるスタックのログを表示しない
-        -->         
-            
-        <compilerarg value="-J-Dfile.encoding=UTF-8" /> <!-- エンコード形式の設定 -->
-        <compilerarg value="-Xlint:unchecked" /> <!-- Java の使用で指定されている未検査変換警告の詳細を表示 -->
-        
-        <!-- ライブラリにクラスパスを通す -->
+        <compilerarg value="-J-Dfile.encoding=UTF-8" />
+        <compilerarg value="-Xlint:unchecked" />
         <classpath>
             <pathelement location="." />
             <pathelement location="${lib}/twitter4j-core-3.0.3.jar" />
@@ -77,100 +49,33 @@
         </classpath>
         </javac>
         
-        <echo> on ${Date} at ${Time} </echo> <!-- タイムスタンプの表示 -->
+        <echo> on ${Date} at ${Time} </echo>
     </target>
-    
-    
-    <!-- jarファイル を作成。compile に依存(compile 後に実行) -->
+  
     <target name="jar" depends="compile" description="make jar file">
     
-        <!-- jarファイル 作成における設定 -->
         <jar
             jarfile="${package}.jar"
             basedir="${destdir}"
             manifest="${package}.mf">
-            
-    
+        <fileset dir="gui">
+            <include name="**/*.png" />
+        </fileset>
         <zipfileset src="${lib}/twitter4j-core-3.0.3.jar" />
         <zipfileset src="${lib}/twitter4j-stream-3.0.3.jar" />
         </jar>
         
-        <echo> on ${Date} at ${Time} </echo> <!-- タイムスタンプを表示 -->
+        <echo> on ${Date} at ${Time} </echo>
     </target>
-    
-    <!-- ファイルの削除。依存なし -->
     <target name="clean" description="cleaning">
         
-        <!-- 指定したファイル or ディレクトリを削除 -->
         <delete dir="${destdir}" />
+        <delete dir="${resourcedir}" />
         <delete file="${package}.jar" />
         <delete dir="${docdir}" />
         <delete file="../${zipname}.zip" />
-        <delete>
-            <fileset dir="${package}" includes="*.class" /> <!-- クラスファイルの削除 -->
-        </delete>  
-        <delete dir="ResultImages" />
-        <echo> on ${Date} at ${Time} </echo> <!-- タイムスタンプを表示 -->
+        <echo> on ${Date} at ${Time} </echo>
     </target>
-    
-    <!-- テスト起動。all に依存(all 後に実行) -->
-    <target name="test" depends="all" description="Test Play">
-        
-        <!-- プログラムを実行 -->
-        <exec executable="java" spawn="false">
-            <arg line="-Dfile.encoding=UTF-8 -Xmx512m -Xss1024k -jar ${package}.jar" />
-        </exec>
-        
-        <echo> on ${Date} at ${Time} </echo> <!-- タイムスタンプを表示 -->
-    </target>
-        <!-- Javadoc。all に依存(all 後に実行) -->
-    <target name="doc" depends="all" description="make document (Javadoc)">
-        <mkdir dir="${docdir}" />
-        <!-- Javadoc についての設定 -->
-        <javadoc
-            locale="en_US"
-            sourcepath="${basedir}"
-            destdir="${docdir}"
-            packagenames="${packagenames}"
-            author="true"
-            version="true"
-            charset="UTF-8"
-            encoding="UTF-8"
-            docencoding="UTF-8"
-            access="private"
-            linksource="yes"
-            additionalparam="-J-Dfile.encoding=UTF-8">
-            
-            <!-- Javadoc のページタイトル設定 -->
-            <doctitle>${doc-title}</doctitle>
-            <!-- Javadoc のコピーライト設定 -->
-            <bottom>${copyright}</bottom>
-            
-        <classpath>
-            <pathelement location="." />
-            <pathelement location="${lib}/twitter4j-core-3.0.3.jar" />
-            <pathelement location="${lib}/twitter4j-stream-3.0.3.jar" />
-        </classpath>
-
-        </javadoc>
-        
-    <echo> on ${Date} at ${Time} </echo>
-    </target>
-    
-    <!-- Zipファイル の作成。clean に依存(clean 後に実行) -->
-    <target name="zip" depends="clean" description="make zip file">
-    
-        <!-- 既に同じ名前の ZIPファイル 削除する -->
-        <delete file="../${zipname}.zip" />
-        
-          <!-- ZIPファイル を生成 -->
-        <zip destfile="../${zipname}.zip">
-            <zipfileset dir="." prefix="${zipname}" />
-        </zip>
-        
-        <echo> on ${Date} at ${Time} </echo>  <!-- タイムスタンプを表示 --> 
-    </target>
-    
 </project>
     
     
