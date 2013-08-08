@@ -175,11 +175,11 @@ public class Tweet extends JPanel{
     
   }
   
-  public void setValues(Status status, ClientModel model,ImageIcon image,boolean isSelect){
+  public void setValues(Status status,String text, ClientModel model,ImageIcon image,boolean isSelect){
     this.icon=image;
     this.iconLabel.setIcon(this.icon);
     this.name.setText(status.getUser().getName());
-    this.text.setText(status.getText());
+    this.text.setText(text);
     if(isSelect){
       this.setBackground(Color.blue);
     }else{

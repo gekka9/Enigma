@@ -14,24 +14,21 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 public class Rotor {
-  ArrayList<Character> charList;
-  HashMap<Character,Character> link;
+  private ArrayList<Character> charList;
+  private HashMap<Character,Character> link;
+  private boolean isReflector=false;
   
-  Rotor() throws IOException{
+  Rotor(boolean isReflector) throws IOException{
+    this.isReflector=isReflector;
     this.charList=new ArrayList<Character>();
     this.link=new HashMap<Character,Character>();
-    File file = new File("first.txt");
-    BufferedReader br = new BufferedReader(new FileReader(file));
-    String str = br.readLine();
-    while(str != null){
-      char[] strChar=str.toCharArray();
-      this.charList.add(strChar[0]);
-      str = br.readLine();
-    }
-    br.close();
+    this.resetCharList();
   }
   
-  public void initialize(long seed, int offset){
+  public void initialize(long seed, int offset) throws IOException{
+    if(!this.isReflector){
+      this.resetCharList();
+    }
     ArrayList<Character> hashedList=(ArrayList<Character>) this.charList.clone();
     Collections.shuffle(hashedList, new Random(seed));
     Collections.rotate(this.charList, offset);
@@ -53,7 +50,6 @@ public class Rotor {
     int result=0;
     if(this.link.containsValue(aChar)){
       Set<Entry<Character,Character>> keys = this.link.entrySet();
-      
       Iterator<Entry<Character, Character>> iterator = keys.iterator();
       while(iterator.hasNext()){
         //キーと値をセットを持つ、Map.Entry型のオブジェクトを取得する
@@ -64,6 +60,7 @@ public class Rotor {
         Character value = entry.getValue();
         if(aChar ==value){
           result=this.charList.indexOf(key);
+          break;
         }
       }
     }
@@ -74,5 +71,21 @@ public class Rotor {
   }
   public int getIndex(char target){
     return this.charList.indexOf(target);
+  }
+  
+  public void resetCharList() throws IOException{
+    this.charList = new ArrayList<Character>(); 
+    File file = new File("first.txt");
+    BufferedReader br = new BufferedReader(new FileReader(file));
+    String str = br.readLine();
+    while(str != null){
+      char[] strChar=str.toCharArray();
+      this.charList.add(strChar[0]);
+      str = br.readLine();
+    }
+    br.close();
+  }
+  public boolean isContains(char target){
+    return this.charList.contains(target);
   }
 }
