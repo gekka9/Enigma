@@ -34,7 +34,7 @@ public class MainFrame extends JFrame{
     this.setLocation(LOCATION_WIDTH,LOCATION_HEIGHT);
     this.postField=new PostField(this.model.getTwitter());
     this.getContentPane().add(this.postField);
-  
+
     this.listModel = new DefaultListModel();
     this.list = new JList(this.listModel);
     this.list.setLayoutOrientation(JList.VERTICAL);
@@ -43,6 +43,10 @@ public class MainFrame extends JFrame{
     scrollPane.setPreferredSize(new Dimension(SCROLLPANE_WIDTH,SCROLLPANE_HEIGHT));
     this.getContentPane().add(scrollPane);
     this.pack();
+    
+    EnigmaMenu menu = new EnigmaMenu(listModel);
+    this.setMenuBar(menu);
+  
     this.setVisible(true);
   } 
 

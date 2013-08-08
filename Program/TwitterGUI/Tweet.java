@@ -30,7 +30,8 @@ public class Tweet extends JPanel{
   private JButton favButton;
   private JButton otherButton;
   public static final int BUTTON_SIZE=32;
-  public static final int ICON_SIZE=80;
+  public static final int ICON_SIZE=60;
+  public static final int CONSOLE_SIZE=80;
   
   public Tweet(){
     super();
@@ -39,7 +40,6 @@ public class Tweet extends JPanel{
     GridBagConstraints c=new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;  // 制約の記述
     c.anchor=GridBagConstraints.NORTHWEST;
-    c.insets = new Insets(3, 0, 0, 3);
     this.setBackground(Color.red);
     
     //アイコン
@@ -47,8 +47,8 @@ public class Tweet extends JPanel{
     c.gridy=0;
     c.gridwidth=4;
     c.gridheight=4;
-    iconLabel = new JLabel();
     icon=new ImageIcon();
+    iconLabel = new JLabel(icon);
     iconLabel.setBounds(0, 0, ICON_SIZE, ICON_SIZE);
     iconLabel.setPreferredSize(new Dimension(ICON_SIZE,ICON_SIZE));
     layout.setConstraints(iconLabel, c);
@@ -61,6 +61,7 @@ public class Tweet extends JPanel{
     c.gridwidth=12;
     c.gridheight=1;
     c.weightx=1;
+    c.insets = new Insets(3, 0, 0, 3);
     name = new JTextArea();
     name.setEditable(false);
     name.setLineWrap(false);
@@ -76,6 +77,7 @@ public class Tweet extends JPanel{
     c.gridheight=3;
     c.weightx=1;
     //c.weighty=1;
+    c.insets = new Insets(0, 0, 3, 3);
     text = new JTextArea();
     text.setEditable(false);
     text.setLineWrap(true);
@@ -91,8 +93,10 @@ public class Tweet extends JPanel{
     c.gridheight=4;
     c.weightx=0;
     c.weighty=0;
+    c.insets = new Insets(3, 0, 0, 0);
     c.fill=GridBagConstraints.NONE;
     JPanel console = new JPanel();
+    console.setMaximumSize(new Dimension(CONSOLE_SIZE,CONSOLE_SIZE));
     console.setLayout(new GridLayout(2,2));
     layout.setConstraints(console, c);
     this.add(console);
@@ -179,7 +183,7 @@ public class Tweet extends JPanel{
     if(isSelect){
       this.setBackground(Color.blue);
     }else{
-      this.setBackground(Color.red);
+      this.setBackground(Color.lightGray);
     }
   }
 
