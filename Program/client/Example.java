@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import client.ClientModel.Mode;
 import client.EnigmaToken;
 import client.MainFrame;
 import client.ClientFactory;
@@ -35,12 +36,34 @@ public class Example
 {
   public static final String KEY = "5EHIcwWrFiKDJ19l2ceoDQ";
   public static final String SECRET = "yCm7uy1dJMUHG2HRYvozy5iuQ9WEuegssmlBpv6I4";
-  public static final String ACCESS_FILENAME="resource/access.obj"; 
+  public static final String ACCESS_FILENAME="resource/access.obj";
+  private Mode mode; 
+  
   public static void main(String[] args) throws Exception{
+    Mode mode=Mode.NORMAL;
+    if(args.length>0){
+      if(args[0].equals("-h") || args[0].equals("-help")){
+        showHelp();
+        return;
+      }else if(args[0].equals("-n") || args[0].equals("-noenceypt")){
+        mode=Mode.NO_ENCRYPT;
+        System.out.println("start-up in no encrypt mode");
+      }else if(args[0].equals("-l") || args[0].equals("-limit")){
+        mode=Mode.VIEW_LIMIT;
+        System.out.println("start-up in view limited mode");
+      }
+    }else{
+      System.out.println("start-up in normal mode");
+    }
+    
     File newdir = new File("./resource");
     newdir.mkdir();
-    Example stream = new Example();
+    Example stream = new Example(mode);
     stream.startUserStream();
+  }
+  
+  public Example(Mode mode){
+    this.mode=mode;
   }
   
   /*
@@ -104,7 +127,7 @@ public class Example
     }
     //twitter.setOAuthConsumer(KEY, SECRET);
     twitter.setOAuthAccessToken(accessToken);
-    ClientFactory clientFactory= new ClientFactory(twitter,ClientModel.Mode.NORMAL);
+    ClientFactory clientFactory= new ClientFactory(twitter,this.mode);
     ClientModel model = clientFactory.getClientModel();
     List<Status> statuses = twitter.getHomeTimeline();
     for (Status status : statuses) {
@@ -131,6 +154,19 @@ public class Example
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+  }
+  
+  private static void showHelp(){
+    String ln = System.getProperty("line.separator");
+    StringBuilder sb = new StringBuilder();
+    sb.append("java -jar enigma.jar [OPTIONS] <TARGETS...>").append(ln);
+    sb.append(ln);
+    sb.append("OPTIONS").append(ln);
+    sb.append("  -n, -noenceypt:        NO encrypt and NO deceypt.").append(ln);
+    sb.append("  -l, -l:                view ONLY posts tweeted from this client.").append(ln);
+    sb.append("  -h, --help:            show this message.").append(ln);
+    sb.append("  no input:              ececute in normal mode.").append(ln);
+    System.out.println(sb.toString());
   }
 }
 
