@@ -8,8 +8,10 @@ import java.util.Date;
 
 import javax.swing.JTextArea;
 
+import client.ClientModel.Mode;
+
 import enigma.Enigma;
-import enigma.Enigma.Mode;
+import enigma.Enigma.CharacterType;
 import enigma.CharCheck;
 
 import twitter4j.Status;
@@ -29,16 +31,18 @@ public class PostField extends JTextArea{
   private Enigma kanjiEnigma;
   private Enigma alphabetEnigma;
   private Enigma numberEnigma;
+  private ClientModel model;
   private long destTweet;
   private String destUser;
   
-  public PostField(Twitter twitter){
-    this.hiraganaEnigma = new Enigma(Mode.HIRAGANA);
-    this.katakanaEnigma = new Enigma(Mode.KATAKANA);
-    this.kanjiEnigma = new Enigma(Mode.KANJI);
-    this.alphabetEnigma = new Enigma(Mode.ALPHABET);
-    this.numberEnigma = new Enigma(Mode.NUMBER);
-    this.twitter=twitter;
+  public PostField(ClientModel model){
+    this.model=model;
+    this.hiraganaEnigma = new Enigma(CharacterType.HIRAGANA);
+    this.katakanaEnigma = new Enigma(CharacterType.KATAKANA);
+    this.kanjiEnigma = new Enigma(CharacterType.KANJI);
+    this.alphabetEnigma = new Enigma(CharacterType.ALPHABET);
+    this.numberEnigma = new Enigma(CharacterType.NUMBER);
+    this.twitter=model.getTwitter();
     this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
     this.setMaximumSize(new Dimension(Short.MAX_VALUE, 80));
     this.setLineWrap(true);
@@ -52,47 +56,20 @@ public class PostField extends JTextArea{
       if (postText.indexOf("@"+this.destUser) != -1) {
           isReply = true;
       }
-      try {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-        String[] date = sdf.format(new Date()).split("/");
-        this.initialize(Long.parseLong(date[0]), Integer.parseInt(date[1]));
-        String[] targetList = postText.split(" ");
+      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+      String[] date = sdf.format(new Date()).split("/");
+      this.initialize(Long.parseLong(date[0]), Integer.parseInt(date[1]));
+      String[] targetList = postText.split(" ");
+      String resultText="";
+      if(!(this.model.getMode() == Mode.NO_ENCRYPT)){
         ArrayList<String> resultList=new ArrayList<String>();
-        String resultText;
         //もし@が入ってなければ暗号化
         int count=0;
         for(String aString:targetList){
-          StringBuilder builder = new StringBuilder();
-          if(!aString.contains("@")){
-            char[] targetArray = aString.toCharArray();
-            String result="";
-            for(char aChar :targetArray){
-              Mode mode = CharCheck.check(aChar);
-              switch(mode){
-              case ALPHABET : 
-                result = this.alphabetEnigma.encrypt(String.valueOf(aChar));
-                break;
-              case HIRAGANA :
-                result = this.hiraganaEnigma.encrypt(String.valueOf(aChar));
-                break;
-              case KATAKANA :
-                result = this.katakanaEnigma.encrypt(String.valueOf(aChar));
-                break;
-              case KANJI :
-                result = this.kanjiEnigma.encrypt(String.valueOf(aChar));
-                break;
-              case NUMBER :
-                result = this.numberEnigma.encrypt(String.valueOf(aChar));
-                break;
-              default:
-                result = String.valueOf(aChar);
-              }
-              builder.append(result);
-            }
-            resultList.add(builder.toString());
-            builder = new StringBuilder();
+          if(!aString.contains("@")){ 
+            resultList.add(encode(aString));
           }else{
-            resultList.add(aString);
+            resultList.add(aString);  
           }
         }
         resultText = "";
@@ -103,17 +80,21 @@ public class PostField extends JTextArea{
           count++;
           resultText += aString;
         }
+      }else{
+        resultText=postText;
+      }
+      try {
         if(!isReply){
           this.twitter.updateStatus(resultText);
         }else{
           this.twitter.updateStatus(new StatusUpdate(resultText).inReplyToStatusId(this.destTweet));
         }
-        this.destTweet=0;
-        this.destUser=null;
       } catch (TwitterException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
+      this.destTweet=0;
+      this.destUser=null;
       this.setText("");
     }
   }
@@ -131,4 +112,33 @@ public class PostField extends JTextArea{
     this.destUser = status.getUser().getScreenName();
   }
   
+  private String encode(String target){
+    char[] targetArray = target.toCharArray();
+    String result="";
+    StringBuilder builder = new StringBuilder();
+    for(char aChar :targetArray){
+      CharacterType mode = CharCheck.check(aChar);
+      switch(mode){
+      case ALPHABET : 
+        result = this.alphabetEnigma.encrypt(String.valueOf(aChar));
+        break;
+      case HIRAGANA :
+        result = this.hiraganaEnigma.encrypt(String.valueOf(aChar));
+        break;
+      case KATAKANA :
+        result = this.katakanaEnigma.encrypt(String.valueOf(aChar));
+        break;
+      case KANJI :
+        result = this.kanjiEnigma.encrypt(String.valueOf(aChar));
+        break;
+      case NUMBER :
+        result = this.numberEnigma.encrypt(String.valueOf(aChar));
+        break;
+      default:
+        result = String.valueOf(aChar);
+      }
+      builder.append(result);
+    }
+    return builder.toString();
+  }
 }

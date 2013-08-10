@@ -9,13 +9,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import client.EnigmaToken;
 import client.MainFrame;
-import client.TwitterGUIFactory;
+import client.ClientFactory;
 
 
 import twitter4j.Status;
@@ -103,17 +104,15 @@ public class Example
     }
     //twitter.setOAuthConsumer(KEY, SECRET);
     twitter.setOAuthAccessToken(accessToken);
-    TwitterGUIFactory GUIfactory= new TwitterGUIFactory(twitter);
-    MainFrame frame = GUIfactory.getMainFrame();
-    /*
+    ClientFactory clientFactory= new ClientFactory(twitter,ClientModel.Mode.NORMAL);
+    ClientModel model = clientFactory.getClientModel();
     List<Status> statuses = twitter.getHomeTimeline();
     for (Status status : statuses) {
-        frame.addPost(status);
+      model.post(status);
     }
-    */
     TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(conf);
     TwitterStream twitterStream = twitterStreamFactory.getInstance();
-    twitterStream.addListener(new MyUserStreamAdapter(frame));
+    twitterStream.addListener(new MyUserStreamAdapter(model));
     twitterStream.setOAuthAccessToken(accessToken);
     twitterStream.user();
     
@@ -141,11 +140,11 @@ public class Example
 class MyUserStreamAdapter extends UserStreamAdapter
 {
 
-  private MainFrame frame;
+  private ClientModel model;
   private int count=0; 
   
-  public MyUserStreamAdapter(MainFrame frame){
-    this.frame=frame;
+  public MyUserStreamAdapter(ClientModel model){
+    this.model=model;
   }
   
   /*
@@ -156,9 +155,9 @@ class MyUserStreamAdapter extends UserStreamAdapter
   {
     super.onStatus(status);
     //logger.info(status.getText() + " : " + status.getUser().getScreenName());
-    this.frame.addPost(status);
+    this.model.post(status);
     System.out.println(status.getText() + " : " + status.getUser().getScreenName()+" "+status.getUser().getName());
-    System.out.println(count);
-    count++;
+    //System.out.println(count);
+    //count++;
   }
 }

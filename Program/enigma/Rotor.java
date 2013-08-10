@@ -2,6 +2,7 @@ package enigma;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import enigma.Enigma.Mode;
+import enigma.Enigma.CharacterType;
 
 public class Rotor {
   //インデックスと文字の対応。リフレクターでないとき、暗号化・復号化ふごとにこれがrotateされていく。
@@ -22,10 +23,10 @@ public class Rotor {
   //リフレクターかどうかのフラグ
   private boolean isReflector=false;
   //文字種モード
-  private Mode mode;
+  private CharacterType mode;
   
   //リフレクターかどうか、扱う文字種を受け取り、インスタンスを生成する
-  Rotor(boolean isReflector,Enigma.Mode mode) throws IOException{
+  Rotor(boolean isReflector,Enigma.CharacterType mode){
     this.mode=mode;
     this.isReflector=isReflector;
     this.charList=new ArrayList<Character>();
@@ -34,7 +35,7 @@ public class Rotor {
   }
   
   //初期化する
-  public void initialize(long seed, int offset) throws IOException{
+  public void initialize(long seed, int offset){
     if(!this.isReflector){
       this.resetCharList();
     }
@@ -83,7 +84,7 @@ public class Rotor {
   }
   
   //リストを再生成する。
-  public void resetCharList() throws IOException{
+  public void resetCharList(){
     this.charList = new ArrayList<Character>();
     File file=null;
     switch(this.mode){
@@ -106,14 +107,21 @@ public class Rotor {
       file = new File("./strings/alphabet.txt");
       break;
     }
-    BufferedReader br = new BufferedReader(new FileReader(file));
-    String str = br.readLine();
+    BufferedReader br;
+    try {
+      br = new BufferedReader(new FileReader(file));
+    String str;
+      str = br.readLine();
     while(str != null){
       char[] strChar=str.toCharArray();
       this.charList.add(strChar[0]);
       str = br.readLine();
     }
     br.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
   
   //リストにその文字が入っているかどうか。入っていなければ非対応の文字

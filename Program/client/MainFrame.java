@@ -19,10 +19,6 @@ import javax.swing.SwingUtilities;
 import twitter4j.Status;
 
 public class MainFrame extends JFrame{
-
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
   private final static int MINIMUM_WIDTH=420;
   private final static int MINIMUM_HEIGHT=600;
@@ -41,7 +37,7 @@ public class MainFrame extends JFrame{
     this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLocation(LOCATION_WIDTH,LOCATION_HEIGHT);
-    this.postField=new PostField(this.model.getTwitter());
+    this.postField=new PostField(this.model);
     this.model.setField(this.postField);
     this.getContentPane().add(this.postField);
 
@@ -51,7 +47,7 @@ public class MainFrame extends JFrame{
     CellButtonsMouseListener cbml = new CellButtonsMouseListener();
     list.addMouseListener(cbml);
     list.addMouseMotionListener(cbml);
-    this.list.setCellRenderer(new TweetRenderer());
+    this.list.setCellRenderer(new TweetRenderer(model.getMode()));
     this.list.setEnabled(false);
     JScrollPane scrollPane = new JScrollPane(this.list);
     scrollPane.setPreferredSize(new Dimension(SCROLLPANE_WIDTH,SCROLLPANE_HEIGHT));

@@ -22,9 +22,6 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 public class Tweet extends JPanel{
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
   private ClientModel model;
   private JLabel iconLabel;
@@ -157,8 +154,8 @@ public class Tweet extends JPanel{
     this.iconLabel.setIcon(this.icon);
     this.name.setText(status.getUser().getName());
     this.text.setText(text);
-    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN);
-    this.footer.setText("from:"+TweetRenderer.source2clientName(status.getSource())+" at:"+sdf1.format(status.getCreatedAt()));
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss", Locale.JAPAN);
+    this.footer.setText(" at:"+sdf.format(status.getCreatedAt()));
     ActionListener[] listeners= this.reButton.getActionListeners();
     Reply reply = (Reply) listeners[0];
     reply.setStatus(status, model.getField());
