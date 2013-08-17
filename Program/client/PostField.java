@@ -67,7 +67,7 @@ public class PostField extends JTextArea{
         //もし@が入ってなければ暗号化
         int count=0;
         for(String aString:targetList){
-          if(!aString.contains("@")){ 
+          if(!aString.contains("@") && !aString.contains("#")&& !aString.contains("http")){ 
             resultList.add(encode(aString));
           }else{
             resultList.add(aString);  

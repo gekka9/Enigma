@@ -74,7 +74,7 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
           if(count != 0){
             resultList.add(" ");
           }
-          if(!aString.contains("@")){
+          if(!aString.contains("@") && !aString.contains("#")&& !aString.contains("http")){
             resultList.add(decode(aString));
           }else{
             resultList.add(aString);
