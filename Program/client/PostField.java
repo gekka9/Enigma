@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import javax.swing.JTextArea;
 
@@ -100,11 +101,12 @@ public class PostField extends JTextArea{
   }
   
   private void initialize(long seed,int offset) throws IOException{
-    this.alphabetEnigma.initialize(seed, offset);
-    this.hiraganaEnigma.initialize(seed, offset);
-    this.kanjiEnigma.initialize(seed, offset);
-    this.katakanaEnigma.initialize(seed, offset);
-    this.numberEnigma.initialize(seed, offset);
+    Random random = new Random(seed);
+    this.alphabetEnigma.initialize(random.nextLong(), offset);
+    this.hiraganaEnigma.initialize(random.nextLong(), offset);
+    this.kanjiEnigma.initialize(random.nextLong(), offset);
+    this.katakanaEnigma.initialize(random.nextLong(), offset);
+    this.numberEnigma.initialize(random.nextLong(), offset);
   }
   
   public void setDestination(Status status){

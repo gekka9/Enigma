@@ -9,6 +9,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -133,11 +134,12 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     return builder.toString();
   }
   private void initialize(long seed,int offset){
-    this.alphabetEnigma.initialize(seed, offset);
-    this.hiraganaEnigma.initialize(seed, offset);
-    this.kanjiEnigma.initialize(seed, offset);
-    this.katakanaEnigma.initialize(seed, offset);
-    this.numberEnigma.initialize(seed, offset);
+    Random random = new Random(seed);
+    this.alphabetEnigma.initialize(random.nextLong(), offset);
+    this.hiraganaEnigma.initialize(random.nextLong(), offset);
+    this.kanjiEnigma.initialize(random.nextLong(), offset);
+    this.katakanaEnigma.initialize(random.nextLong(), offset);
+    this.numberEnigma.initialize(random.nextLong(), offset);
   }
   
   private String decode(String target){

@@ -2,6 +2,7 @@ package enigma;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 public class Enigma {
   //ローター
   private Rotor rotor;
@@ -17,8 +18,9 @@ public class Enigma {
   
   //初期化する
   public void initialize(long seed, int offset){
-    rotor.initialize(seed, offset);
-    reflector.initialize(seed, offset);
+    Random random = new Random(seed);
+    rotor.initialize(random.nextLong(), offset);
+    reflector.initialize(random.nextLong(), offset);
   }
   
   //暗号化
