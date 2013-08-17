@@ -1,16 +1,20 @@
 package client;
 
-import java.awt.*;
-import java.awt.event.*;
+
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.DefaultListModel;
 
-import twitter4j.Twitter;
 
 class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
   private static final long serialVersionUID = 1L;
   private DefaultListModel listModel;
-  private Twitter twitter;
   private ClientModel model;
   public EnigmaMenu(DefaultListModel listModel,ClientModel model){
     this.listModel=listModel;
@@ -20,7 +24,7 @@ class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
         menuFile.addActionListener(this);
         this.add(menuFile);
         // [File]-[Open]
-        MenuItem crearTweets = new MenuItem("Clear Tweets", new MenuShortcut('O'));
+        MenuItem crearTweets = new MenuItem("Clear Tweets");
         menuFile.add(crearTweets);
         MenuItem clearAuthentication = new MenuItem("Clear Authentication");
         menuFile.add(clearAuthentication);
@@ -37,12 +41,9 @@ class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
         new DecodeWindow(this.model);
       }
     }
+    @Override
     public void itemStateChanged(ItemEvent e) {
-        CheckboxMenuItem menu = (CheckboxMenuItem)e.getSource();
-        if (menu.getState()) {
-            System.out.println(menu.getLabel() + " SELECTED");
-        } else {
-            System.out.println(menu.getLabel() + " DESELECTED");
-        }
+      // TODO Auto-generated method stub
+      
     }
 }

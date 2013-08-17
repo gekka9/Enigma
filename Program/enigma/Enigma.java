@@ -15,12 +15,11 @@ public class Enigma {
     this.rotor = new Rotor(false,mode);
     this.reflector = new Rotor(true,mode);
   }
-  
   //初期化する
   public void initialize(long seed, int offset){
     Random random = new Random(seed);
-    rotor.initialize(random.nextLong(), offset);
-    reflector.initialize(random.nextLong(), offset);
+    rotor.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    reflector.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
   //暗号化
@@ -84,8 +83,6 @@ public class Enigma {
     for(String aString:encryptedList){
       String result = enigma.decrypt(aString);
       resultList.add(result);
-    }
-    for(String aString:resultList){
     }
   }
   

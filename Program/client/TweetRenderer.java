@@ -54,7 +54,7 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     TweetData tweetData = (TweetData) data;
       ImageIcon icon = this.imageMap.get(tweetData.status.getUser());
       if(icon == null){
-        icon = this.createIcon(tweetData.status.getUser().getProfileImageURL());
+        icon = TweetRenderer.createIcon(tweetData.status.getUser().getProfileImageURL());
         this.imageMap.put(tweetData.status.getUser(), icon);
       }
       String resultText;
@@ -135,11 +135,11 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
   }
   private void initialize(long seed,int offset){
     Random random = new Random(seed);
-    this.alphabetEnigma.initialize(random.nextLong(), offset);
-    this.hiraganaEnigma.initialize(random.nextLong(), offset);
-    this.kanjiEnigma.initialize(random.nextLong(), offset);
-    this.katakanaEnigma.initialize(random.nextLong(), offset);
-    this.numberEnigma.initialize(random.nextLong(), offset);
+    this.alphabetEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.hiraganaEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.kanjiEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.katakanaEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.numberEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
   private String decode(String target){

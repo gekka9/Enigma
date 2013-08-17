@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 
 import client.ClientModel.Mode;
 import client.EnigmaToken;
-import client.MainFrame;
 import client.ClientFactory;
 
 

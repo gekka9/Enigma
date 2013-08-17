@@ -1,17 +1,14 @@
 package client;
 
-import java.awt.Dimension;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import enigma.CharCheck;
@@ -42,6 +39,11 @@ public class DecodeWindow extends JFrame{
     this.numberEnigma = new Enigma(CharacterType.NUMBER);
     
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+    JTextArea notice = new JTextArea();
+    notice.setText("任意のツイートのIDを入力してください。"+System.getProperty("line.separator")+"https://twitter.com/gekka9/status/368681471487143936"+System.getProperty("line.separator")+"なら368681471487143936です。");
+    notice.setEditable(false);
+    notice.setLineWrap(true);
+    this.add(notice);
     this.field = new JTextField();
     this.field.setColumns(50);
     this.add(this.field);
@@ -80,11 +82,11 @@ public class DecodeWindow extends JFrame{
   
   private void initialize(long seed,int offset){
     Random random = new Random(seed);
-    this.alphabetEnigma.initialize(random.nextLong(), offset);
-    this.hiraganaEnigma.initialize(random.nextLong(), offset);
-    this.kanjiEnigma.initialize(random.nextLong(), offset);
-    this.katakanaEnigma.initialize(random.nextLong(), offset);
-    this.numberEnigma.initialize(random.nextLong(), offset);
+    this.alphabetEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.hiraganaEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.kanjiEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.katakanaEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.numberEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
   private String decode1(Status status){
@@ -161,8 +163,7 @@ class DecodeListener implements KeyListener{
   @Override
   public void keyPressed(KeyEvent e) {
     int key = e.getKeyCode();
-    int mod = e.getModifiersEx();
-    if ((mod & InputEvent.META_DOWN_MASK) != 0 && key == KeyEvent.VK_ENTER){
+    if (key == KeyEvent.VK_ENTER){
         this.window.showDecode(Long.parseLong(this.window.getField().getText()));
         this.window.getField().setText("");
     }

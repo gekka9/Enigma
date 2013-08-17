@@ -102,11 +102,11 @@ public class PostField extends JTextArea{
   
   private void initialize(long seed,int offset) throws IOException{
     Random random = new Random(seed);
-    this.alphabetEnigma.initialize(random.nextLong(), offset);
-    this.hiraganaEnigma.initialize(random.nextLong(), offset);
-    this.kanjiEnigma.initialize(random.nextLong(), offset);
-    this.katakanaEnigma.initialize(random.nextLong(), offset);
-    this.numberEnigma.initialize(random.nextLong(), offset);
+    this.alphabetEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.hiraganaEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.kanjiEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.katakanaEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
+    this.numberEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
   public void setDestination(Status status){
