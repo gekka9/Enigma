@@ -44,7 +44,7 @@ public class Tweet extends JPanel{
     GridBagConstraints c=new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;  // 制約の記述
     c.anchor=GridBagConstraints.NORTHWEST;
-    this.setBackground(Color.red);
+    this.setBackground(Color.LIGHT_GRAY);
     
     //アイコン
     c.gridx=0;

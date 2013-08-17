@@ -54,7 +54,7 @@ public class MainFrame extends JFrame{
     this.getContentPane().add(scrollPane);
     this.pack();
     
-    EnigmaMenu menu = new EnigmaMenu(listModel);
+    EnigmaMenu menu = new EnigmaMenu(listModel,this.model);
     this.setMenuBar(menu);
   
     this.setVisible(true);

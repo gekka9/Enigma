@@ -96,7 +96,7 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     return this.tweet;
   }
   
-  private ImageIcon createIcon(String urlString){
+  public static ImageIcon createIcon(String urlString){
     Image image;
     try {
       image = ImageIO.read(new URL(urlString));
