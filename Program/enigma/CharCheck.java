@@ -9,10 +9,17 @@ import java.util.regex.Pattern;
 
 import enigma.Enigma.CharacterType;
 
-
+/**
+ * 文字種のチェックを行うクラス
+ * @author gekka9
+ *
+ */
 public class CharCheck {
-
-  //文字種のチェックを行うクラス
+  /**
+   * 文字種のチェックを行う
+   * @param target 対象の文字
+   * @return 文字種
+   */
   public static Enigma.CharacterType check(final char target){
       int targetChar = getSJISByte(target);
       
@@ -89,7 +96,11 @@ public class CharCheck {
       }
   }
   
-  //テスト用クラス
+  /**
+   * テスト用クラス
+   * @param args
+   * @throws IOException
+   */
   public static void main(String[] args) throws IOException {
     File file = new File("first.txt");
     BufferedReader br = new BufferedReader(new FileReader(file));

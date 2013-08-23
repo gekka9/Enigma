@@ -25,19 +25,60 @@ import enigma.Enigma.CharacterType;
 
 import twitter4j.User;
 
+/**
+ * つぶやきを描画するレンダラー
+ * @author gekka9
+ *
+ */
 public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
+  /**
+   * Tweetインスタンスを束縛する
+   */
   private Tweet tweet;
+  /**
+   * 取得済みアイコンを束縛するMap
+   */
   private HashMap<User,ImageIcon> imageMap;
+  /**
+   * アイコンのサイズ
+   */
   private static int SIZE=48;
+  
+  /**
+   * ひらがなのための復号器
+   */
   private Enigma hiraganaEnigma;
+  /**
+   *カタカナのための復号器
+   */
   private Enigma katakanaEnigma;
+  /**
+   * 漢字のための復号器
+   */
   private Enigma kanjiEnigma;
+  /**
+   * アルファベットのための復号器
+   */
   private Enigma alphabetEnigma;
+  /**
+   * 数字のための復号器
+   */
   private Enigma numberEnigma;
+
+  /**
+   * クリックされたつぶやきのインデックス
+   */
   public int pressedIndex;
   public JButton button;
+  /**
+   * 現在のモード
+   */
   public ClientModel.Mode mode;
   
+  /**
+   * コンストラクタ
+   * @param mode 実行モード
+   */
   public TweetRenderer(Mode mode){
     this.mode = mode;
     this.tweet = new Tweet();
@@ -49,6 +90,9 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     this.numberEnigma = new Enigma(CharacterType.NUMBER);
   }
   
+  /**
+   * 描画のための処理
+   */
   @Override
   public Component getListCellRendererComponent(JList list, Object data,int index, boolean isSelected, boolean cellHasFocus) {
     TweetData tweetData = (TweetData) data;
@@ -96,6 +140,11 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     return this.tweet;
   }
   
+  /**
+   * 画像を取得してアイコンを生成
+   * @param urlString アイコン画像のURL
+   * @return 生成したアイコン
+   */
   public static ImageIcon createIcon(String urlString){
     Image image;
     try {
@@ -115,6 +164,12 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     }
     return null;
   }
+  
+  /**
+   * XML形式の文字列からクライアント名を抜き出す
+   * @param target 対象の文字列
+   * @return 抜き出されたクライアント名
+   */
   public static String source2clientName(String target){
     StringBuilder builder = new StringBuilder();
     char[] targetArray = target.toCharArray();
@@ -133,6 +188,11 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     }
     return builder.toString();
   }
+  /**
+   * 復号器の初期化
+   * @param seed シード値
+   * @param offset
+   */
   private void initialize(long seed,int offset){
     Random random = new Random(seed);
     this.alphabetEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
@@ -142,6 +202,11 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
     this.numberEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
+  /**
+   * 文字列を受け取り、復号化して返す
+   * @param target 復号化対象の文字列
+   * @return 復号化後の文字列
+   */
   private String decode(String target){
     char[] targetArray = target.toCharArray();
     StringBuilder builder = new StringBuilder();

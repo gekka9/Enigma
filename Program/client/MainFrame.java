@@ -18,19 +18,64 @@ import javax.swing.SwingUtilities;
 
 import twitter4j.Status;
 
+/**
+ * メインフレーム
+ * @author gekka9
+ *
+ */
 public class MainFrame extends JFrame{
-  private static final long serialVersionUID = 1L;
+  /**
+   * 生成されたシリアルバージョンUID
+   */
+  private static final long serialVersionUID = -6021698212316281757L;
+  
+  /**
+   * 幅の最小値
+   */
   private final static int MINIMUM_WIDTH=420;
+  /**
+   * 高さの最小値
+   */
   private final static int MINIMUM_HEIGHT=600;
+  /**
+   * 表示位置のオフセット
+   */
   private final static int LOCATION_WIDTH=50;
+  /**
+   * 表示位置のオフセット
+   */
   private final static int LOCATION_HEIGHT=50;
+  /**
+   * タイムライン部の幅
+   */
   private final static int SCROLLPANE_WIDTH=400;
+  /**
+   * タイムライン部の高さ
+   */
   private final static int SCROLLPANE_HEIGHT=600;
-  private ClientModel model;
+  /**
+   * モデル
+   */
+  private ClientModel model; 
+  /**
+   * ListModelを束縛する
+   */
   private DefaultListModel listModel;
+  
+  /**
+   * JListを束縛する
+   */
   private JList list;
+  
+  /**
+   * 投稿フィールド
+   */
   private PostField postField;
   
+  /**
+   * コンストラクタ
+   * @param model モデル
+   */
   public MainFrame(ClientModel model){
     this.model=model;
     this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
@@ -60,21 +105,38 @@ public class MainFrame extends JFrame{
     this.setVisible(true);
   } 
 
+  /**
+   * 新着ツイートを追加
+   * @param status 新着ツイートのStatus
+   */
   public void addPost(Status status){
     this.listModel.add(0,new TweetData(status,this.model));
   }
 
+  /**
+   * 投稿フィールドのゲッター
+   * @return
+   */
   public PostField getPostField() {
     return this.postField;
   } 
 }
 
+/**
+ * ボタン押下のためのマウスアダプター
+ * @author gekka9
+ *
+ */
 class CellButtonsMouseListener extends MouseAdapter{
   
   public CellButtonsMouseListener(){
   }
 
-  @Override public void mousePressed(MouseEvent e) {
+  /**
+   * 押下されたとき
+   */
+  @Override
+  public void mousePressed(MouseEvent e) {
       JList list = (JList)e.getComponent();
       Point pt = e.getPoint();
       int index  = list.locationToIndex(pt);
@@ -88,7 +150,11 @@ class CellButtonsMouseListener extends MouseAdapter{
           }
       }
   }
-  @Override public void mouseReleased(MouseEvent e) {
+  /**
+   * マウスボタンが離されたとき
+   */
+  @Override
+  public void mouseReleased(MouseEvent e) {
       JList list = (JList)e.getComponent();
       Point pt = e.getPoint();
       int index  = list.locationToIndex(pt);
@@ -107,6 +173,13 @@ class CellButtonsMouseListener extends MouseAdapter{
       }
   }
   
+  /**
+   * クリック位置にあるボタンを取得する
+   * @param list ボタンの親のJList
+   * @param pt クリック位置
+   * @param index 位置
+   * @return
+   */
   private JButton getButton(JList list, Point pt, int index) {
     System.out.println(pt);
       int cellIndex = list.locationToIndex(pt);

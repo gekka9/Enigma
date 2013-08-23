@@ -14,17 +14,34 @@ import java.util.Random;
 
 import enigma.Enigma.CharacterType;
 
+/**
+ * ロータ
+ * @author gekka9
+ *
+ */
 public class Rotor {
-  //インデックスと文字の対応。リフレクターでないとき、暗号化・復号化ふごとにこれがrotateされていく。
+  /**
+   * インデックスと文字の対応。リフレクターでないとき、暗号化・復号化ふごとにこれがrotateされていく。
+   */
   private ArrayList<Character> charList;
-  //換字前後の対応
+  /**
+   * 換字前後の対応
+   */
   private HashMap<Character,Character> link;
-  //リフレクターかどうかのフラグ
+  /**
+   * リフレクターかどうかのフラグ
+   */
   private boolean isReflector=false;
-  //文字種モード
+  /**
+   * 文字種モード
+   */
   private CharacterType mode;
   
-  //リフレクターかどうか、扱う文字種を受け取り、インスタンスを生成する
+  /**
+   * リフレクターかどうか、扱う文字種を受け取り、インスタンスを生成する
+   * @param isReflector リフレクターならtrue
+   * @param mode 文字種
+   */
   Rotor(boolean isReflector,Enigma.CharacterType mode){
     this.mode=mode;
     this.isReflector=isReflector;
@@ -33,7 +50,11 @@ public class Rotor {
     this.resetCharList();
   }
   
-  //初期化する
+  /**
+   * 初期化する
+   * @param seed シード値
+   * @param offset
+   */
   public void initialize(long seed, int offset){
     if(!this.isReflector){
       this.resetCharList();
@@ -48,7 +69,11 @@ public class Rotor {
     }
   }
   
-  //コンソール側からの入力
+  /**
+   * コンソール側からの入力
+   * @param index 入力
+   * @return 出力
+   */
   public int inAside(int index){
     char aChar=this.charList.get(index);
     aChar = this.link.get(aChar);
@@ -56,7 +81,11 @@ public class Rotor {
     return result;
   }
   
-  //リフレクター側からの入力
+  /**
+   * リフレクター側からの入力
+   * @param index 入力
+   * @return 出力
+   */
   public int inBside(int index){
     char aChar=this.charList.get(index);
     int result=0;
@@ -75,14 +104,26 @@ public class Rotor {
     }
     return result;
   }
+  /**
+   * ローターの番号から文字を取得する
+   * @param index インデックス
+   * @return 文字
+   */
   public char getChar(int index){
     return this.charList.get(index);
   }
+  /**
+   * ローターの文字から番号を取得する
+   * @param target 文字
+   * @return インデックス
+   */
   public int getIndex(char target){
     return this.charList.indexOf(target);
   }
   
-  //リストを再生成する。
+  /**
+   * リストを再生成する。
+   */
   public void resetCharList(){
     this.charList = new ArrayList<Character>();
     File file=null;
@@ -123,12 +164,19 @@ public class Rotor {
     }
   }
   
-  //リストにその文字が入っているかどうか。入っていなければ非対応の文字
+  /**
+   * リストにその文字が入っているかどうか。入っていなければ非対応の文字
+   * @param target 対象の文字
+   * @return 入っていればtrue
+   */
   public boolean isContains(char target){
     return this.charList.contains(target);
   }
   
-  //ローターを1目盛り回転する
+  /**
+   * ローターを回転する
+   * @param offset 回転数
+   */
   public void rotate(int offset){
     Collections.rotate(this.charList, offset);
   }

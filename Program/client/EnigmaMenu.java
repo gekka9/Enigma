@@ -11,11 +11,32 @@ import java.awt.event.ItemListener;
 
 import javax.swing.DefaultListModel;
 
-
+/**
+ * メニューバー
+ * @author gekka9
+ *
+ */
 class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
-  private static final long serialVersionUID = 1L;
+  /**
+   * 生成されたシリアルバージョンUID
+   */
+  private static final long serialVersionUID = 8492477380317870610L;
+  
+  /**
+   * タイムラインのListModel
+   */
   private DefaultListModel listModel;
+  
+  /**
+   * モデル
+   */
   private ClientModel model;
+  
+  /**
+   * コンストラクタ
+   * @param listModel タイムラインのlistModel
+   * @param model モデル
+   */
   public EnigmaMenu(DefaultListModel listModel,ClientModel model){
     this.listModel=listModel;
     this.model = model;
@@ -32,6 +53,10 @@ class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
         MenuItem decode = new MenuItem("Decode tweet");
         menuFile.add(decode);
     }
+  
+  /**
+   * メニュー選択時の処理
+   */
     public void actionPerformed(ActionEvent e) {
       if(e.getActionCommand().equals("Clear Tweets")){
         this.listModel.clear();

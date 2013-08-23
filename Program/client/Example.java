@@ -31,11 +31,16 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
+/**
+ * 起動用クラス。認証とユーザーストリームの接続を試みる
+ * @author gekka9
+ *
+ */
 public class Example
 {
   public static final String KEY = "5EHIcwWrFiKDJ19l2ceoDQ";
   public static final String SECRET = "yCm7uy1dJMUHG2HRYvozy5iuQ9WEuegssmlBpv6I4";
-  public static final String ACCESS_FILENAME="resource/access.obj";
+  public static final String ACCESS_FILENAME="resource"+System.getProperty("line.separator")+"access.obj";
   private Mode mode; 
   
   public static void main(String[] args) throws Exception{
@@ -65,7 +70,7 @@ public class Example
     this.mode=mode;
   }
   
-  /*
+  /**
    * UserStreamの開始
    */
   public String startUserStream()throws Exception
@@ -141,6 +146,10 @@ public class Example
     return null;
   }
   
+  /**
+   * アクセストークンを永続化
+   * @param accessToken 対象のアクセストークン
+   */
   private static void storeAccessToken(AccessToken accessToken){
     //accessToken.getToken() を保存
     //accessToken.getTokenSecret() を保存
@@ -155,6 +164,9 @@ public class Example
     }
   }
   
+  /**
+   * ヘルプの表示
+   */
   private static void showHelp(){
     String ln = System.getProperty("line.separator");
     StringBuilder sb = new StringBuilder();
@@ -178,12 +190,16 @@ class MyUserStreamAdapter extends UserStreamAdapter
   private ClientModel model;
   private int count=0; 
   
+  /**
+   * コンストラクタ
+   * @param model Modelインスタンス
+   */
   public MyUserStreamAdapter(ClientModel model){
     this.model=model;
   }
   
-  /*
-   * ツイートに対する反応
+  /**
+   * 新着ツイートがあれば追加を依頼
    */
   @Override
   public void onStatus(Status status)

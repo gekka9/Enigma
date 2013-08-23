@@ -19,17 +19,61 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+/**
+ * 任意のツイートを復号化するためのJFrame
+ * @author gekka9
+ *
+ */
 public class DecodeWindow extends JFrame{
+  /**
+   * 生成されたシリアルバージョンUID
+   */
+  private static final long serialVersionUID = -5083336928366012763L;
+  
+  /**
+   * Modelを束縛する
+   */
   private ClientModel model;
+  
+  /**
+   * 復号化されたツイートを表示するための領域を束縛する
+   */
   private Tweet tweet;
+  
+  /**
+   * ひらがなを復号化するための装置のインスタンス
+   */
   private Enigma hiraganaEnigma;
+  
+  /**
+   * カタカナを復号化するための装置のインスタンス
+   */
   private Enigma katakanaEnigma;
+  
+  /**
+   * 漢字を復号化するための装置のインスタンス
+   */
   private Enigma kanjiEnigma;
+  
+  /**
+   * アルファベットを復号化するための装置のインスタンス
+   */
   private Enigma alphabetEnigma;
+  
+  /**
+   * 数字を復号化するための装置のインスタンス
+   */
   private Enigma numberEnigma;
+  
+  /**
+   * 復号化するツイートのIDを入力するためのフィールド
+   */
   private JTextField field;
 
-  
+  /**
+   * コンストラクタ
+   * @param model モデル
+   */
   public DecodeWindow(ClientModel model){
     this.model = model;
     this.hiraganaEnigma = new Enigma(CharacterType.HIRAGANA);
@@ -55,10 +99,18 @@ public class DecodeWindow extends JFrame{
     this.setVisible(true);
   }
 
+  /**
+   * 投稿フィールドのインスタンスを返す
+   * @return 投稿フィールドのインスタンス
+   */
   public JTextField getField(){
     return this.field;
   }
   
+  /**
+   * 復号化して表示する
+   * @param targetID 復号化対象のツイートのID
+   */
   public void showDecode(long targetID){
     Status status;
     Twitter twitter = this.model.getTwitter();
@@ -80,6 +132,11 @@ public class DecodeWindow extends JFrame{
     }
   }
   
+  /**
+   * 復号器の初期化
+   * @param seed シード値
+   * @param offset ロータの初期位置
+   */
   private void initialize(long seed,int offset){
     Random random = new Random(seed);
     this.alphabetEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
@@ -89,6 +146,11 @@ public class DecodeWindow extends JFrame{
     this.numberEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
+  /**
+   * つぶやきのStatusインスタンスを受け取り、復号化後の本文を返す
+   * @param status 復号化対象のStatusインスタンス
+   * @return 復号化後の本文
+   */
   private String decode1(Status status){
     //初期化
     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
@@ -121,6 +183,11 @@ public class DecodeWindow extends JFrame{
     return resultText;
   }
   
+  /**
+   * 文字列を受け取り、復号化して返す
+   * @param target 対象の文字列
+   * @return 復号化後の文字列
+   */
   private String decode(String target){
     char[] targetArray = target.toCharArray();
     StringBuilder builder = new StringBuilder();
@@ -152,14 +219,29 @@ public class DecodeWindow extends JFrame{
   }
 }
 
+/**
+ * 復号化対象のIDを入力するためのフォームのコントローラ
+ * @author otaki
+ *
+ */
 class DecodeListener implements KeyListener{
 
+  /**
+   * 入力フォームの親フレームを束縛する
+   */
   private DecodeWindow window;
   
+  /**
+   * コンストラクタ
+   * @param window 入力フォームの親フレーム
+   */
   public DecodeListener(DecodeWindow window){
     this.window=window;
   } 
 
+  /**
+   * エンターキーが押されたらフォームに入力されたIDを対象に復号化を依頼する
+   */
   @Override
   public void keyPressed(KeyEvent e) {
     int key = e.getKeyCode();

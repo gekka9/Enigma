@@ -21,22 +21,73 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+/**
+ * 1つのツイートを描画するJPanel
+ * @author gekka9
+ *
+ */
 public class Tweet extends JPanel{
-  private static final long serialVersionUID = 1L;
+  /**
+   * 生成されたシリアルバージョンUID
+   */
+  private static final long serialVersionUID = 3505393704256155762L;
+  /**
+   * モデル
+   */
   private ClientModel model;
+  
+  /**
+   * アイコン描画のためのラベル
+   */
   private JLabel iconLabel;
+  /**
+   * アイコン
+   */
   private ImageIcon icon;
+  /**
+   * ツイートした人の名前
+   */
   private JTextArea name;
-  private JTextArea text;
+  /**
+   * ツイート本文
+   */
+  private JTextArea text; 
+  /**
+   * フッター
+   */
   private JTextArea footer;
+  /**
+   * RTのためのボタン
+   */
   private JButton rtButton;
+  /**
+   * リプライのためのボタン
+   */
   private JButton reButton;
+  /**
+   * お気に入りのためのボタン
+   */
   private JButton favButton;
+  /**
+   * 将来の拡張用のボタン
+   */
   private JButton otherButton;
+  /**
+   * ボタンの幅と高さ
+   */
   public static final int BUTTON_SIZE=32;
-  public static final int ICON_SIZE=60;
+  /**
+   * アイコンの幅と高さ
+   */
+  public static final int ICON_SIZE=60; 
+  /**
+   * コンソール(ボタンの集合)の幅と高さ
+   */
   public static final int CONSOLE_SIZE=80;
   
+  /**
+   * コンストラクタ。まず空の入れ物だけを用意する
+   */
   public Tweet(){
     super();
     GridBagLayout layout=new GridBagLayout();
@@ -149,6 +200,14 @@ public class Tweet extends JPanel{
     console.add(otherButton);  
   }
   
+  /**
+   * 空の領域に値を実際に入れていく
+   * @param status つぶやきのStatusインスタンス
+   * @param text つぶやきの本文
+   * @param model モデル
+   * @param image アイコン画像
+   * @param isSelect 現在選択されているかどうか
+   */
   public void setValues(Status status,String text, ClientModel model,ImageIcon image,boolean isSelect){
     this.icon=image;
     this.iconLabel.setIcon(this.icon);
@@ -174,9 +233,18 @@ public class Tweet extends JPanel{
     }
   }
 
+  /**
+   * ゲッター
+   * @return
+   */
   public ClientModel getClientModel() {
     return this.model;
   }
+  /**
+   * リプライのためのリスナー
+   * @author gekka9
+   *
+   */
   class Reply implements ActionListener{
     private Status status;
     private PostField field;
@@ -194,6 +262,11 @@ public class Tweet extends JPanel{
     }
   }
   
+  /**
+   *RTのためのリスナー
+   * @author gekka9
+   *
+   */
   class ReTweet implements ActionListener{
     private Status status;
     private Twitter twitter;
@@ -217,6 +290,11 @@ public class Tweet extends JPanel{
     }
   }
   
+  /**
+   * お気に入りのためのリスナー
+   * @author gekka9
+   *
+   */
   class Favorite implements ActionListener{
     private Status status;
     private Twitter twitter;

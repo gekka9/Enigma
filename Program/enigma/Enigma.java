@@ -1,28 +1,55 @@
 package enigma;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Random;
+
+/**
+ * なんちゃってエニグマ暗号器
+ * @author gekka9
+ *
+ */
 public class Enigma {
-  //ローター
+  /**
+   * ローター
+   */
   private Rotor rotor;
-  //リフレクター
+  /**
+   * リフレクター
+   */
   private Rotor reflector;
+  /**
+   * 扱う文字種
+   * @author gekka9
+   *
+   */
   public enum CharacterType{HIRAGANA, KATAKANA, KANJI, ALPHABET,NUMBER,OTHER}
   
-  //モードを受け取ってそのモードのインスタンスを生成する
+  /**
+   * モードを受け取ってそのモードのインスタンスを生成する
+   * @param mode
+   */
   public Enigma(CharacterType mode){
     this.rotor = new Rotor(false,mode);
     this.reflector = new Rotor(true,mode);
   }
-  //初期化する
+  /**
+   * 初期化する
+   * @param seed シード値
+   * @param offset
+   */
   public void initialize(long seed, int offset){
     Random random = new Random(seed);
     rotor.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
     reflector.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
-  //暗号化
+  /**
+   * 暗号化
+   * @param target 対象の文字列
+   * @return 暗号化後の文字列
+   */
   public String encrypt (String target){
     char[] targetArray = target.toCharArray();
     //結果を収めるビルダー
@@ -49,7 +76,11 @@ public class Enigma {
     return resultBuilder.toString();
   }
   
-  //復号化。処理は暗号化と同様
+  /**
+   * 復号化。処理は暗号化と同様
+   * @param target 対象の文字列
+   * @return 復号化後の文字列
+   */
   public String decrypt(String target){
     char[] targetArray = target.toCharArray();
     StringBuilder resultBuilder = new StringBuilder();
@@ -67,7 +98,11 @@ public class Enigma {
     return resultBuilder.toString();
   }
   
-  //テスト用クラス
+  /**
+   * テスト用クラス
+   * @param args
+   * @throws IOException
+   */
   public static void main(String[] args) throws IOException{
     Enigma enigma = new Enigma(CharacterType.ALPHABET);
     enigma.initialize(0, 5);

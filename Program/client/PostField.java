@@ -20,22 +20,81 @@ import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+/**
+ * 投稿フィールド
+ * @author gekka9
+ *
+ */
 public class PostField extends JTextArea{
 
-  private static final long serialVersionUID = 1L;
+  /**
+   * 生成されたシリアルバージョンUID
+   */
+  private static final long serialVersionUID = -1192047153835119169L;
+  
+  /**
+   * 認証済みのTwitterインスタンス
+   */
   private Twitter twitter;
+  
+  /**
+   * 投稿フィールドの幅
+   */
   private static final int WIDTH=400;
+  
+  /**
+   * 投稿フィールドの高さ
+   */
   private static final int HEIGHT=80;
-  private static final int POST_LENGTH=80;
+  
+  /**
+   * 本文の長さの最大値
+   */
+  private static final int POST_LENGTH=140;
+  /**
+   * ひらがなを復号化するための装置のインスタンス
+   */
   private Enigma hiraganaEnigma;
+  
+  /**
+   * カタカナを復号化するための装置のインスタンス
+   */
   private Enigma katakanaEnigma;
+  
+  /**
+   * 漢字を復号化するための装置のインスタンス
+   */
   private Enigma kanjiEnigma;
+  
+  /**
+   * アルファベットを復号化するための装置のインスタンス
+   */
   private Enigma alphabetEnigma;
+  
+  /**
+   * 数字を復号化するための装置のインスタンス
+   */
   private Enigma numberEnigma;
+  
+  /**
+   * モデル
+   */
   private ClientModel model;
+  
+  /**
+   * 現在のリプライ元のツイートID
+   */
   private long destTweet;
+  
+  /**
+   * 現在のリプライ先ユーザ
+   */
   private String destUser;
   
+  /**
+   * コンストラクタ
+   * @param model モデル
+   */
   public PostField(ClientModel model){
     this.model=model;
     this.hiraganaEnigma = new Enigma(CharacterType.HIRAGANA);
@@ -49,8 +108,11 @@ public class PostField extends JTextArea{
     this.setLineWrap(true);
     this.addKeyListener(new Poster(this));
   }
-
-  public void post() throws IOException{
+  
+  /**
+   * つぶやく
+   */
+  public void post(){
     if(this.getText().length() <POST_LENGTH && 0<this.getText().length() ){
       String postText = this.getText();
       boolean isReply=false;
@@ -100,7 +162,12 @@ public class PostField extends JTextArea{
     }
   }
   
-  private void initialize(long seed,int offset) throws IOException{
+  /**
+   * 暗号器の初期化
+   * @param seed シード値
+   * @param offset
+   */
+  private void initialize(long seed,int offset){
     Random random = new Random(seed);
     this.alphabetEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
     this.hiraganaEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
@@ -109,11 +176,20 @@ public class PostField extends JTextArea{
     this.numberEnigma.initialize(random.nextLong(), Math.round(random.nextFloat()*10));
   }
   
+  /**
+   * 宛先ツイートのセッター
+   * @param status 宛先ツイート
+   */
   public void setDestination(Status status){
     this.destTweet=status.getId();
     this.destUser = status.getUser().getScreenName();
   }
   
+  /**
+   * 文字列を受け取り、暗号化して返す
+   * @param target 暗号化対象の文字列
+   * @return 暗号化後の文字列
+   */
   private String encode(String target){
     char[] targetArray = target.toCharArray();
     String result="";
