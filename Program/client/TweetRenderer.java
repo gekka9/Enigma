@@ -23,6 +23,7 @@ import enigma.CharCheck;
 import enigma.Enigma;
 import enigma.Enigma.CharacterType;
 
+import twitter4j.Status;
 import twitter4j.User;
 
 /**
@@ -74,13 +75,15 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
    * 現在のモード
    */
   public ClientModel.Mode mode;
+  private ClientModel model;
   
   /**
    * コンストラクタ
    * @param mode 実行モード
    */
-  public TweetRenderer(Mode mode){
+  public TweetRenderer(Mode mode,ClientModel model){
     this.mode = mode;
+    this.model=model;
     this.tweet = new Tweet();
     this.imageMap=new HashMap<User,ImageIcon>();
     this.hiraganaEnigma = new Enigma(CharacterType.HIRAGANA);
@@ -95,22 +98,22 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
    */
   @Override
   public Component getListCellRendererComponent(JList list, Object data,int index, boolean isSelected, boolean cellHasFocus) {
-    TweetData tweetData = (TweetData) data;
-      ImageIcon icon = this.imageMap.get(tweetData.status.getUser());
+    Status status = (Status) data;
+      ImageIcon icon = this.imageMap.get(status.getUser());
       if(icon == null){
-        icon = TweetRenderer.createIcon(tweetData.status.getUser().getProfileImageURL());
-        this.imageMap.put(tweetData.status.getUser(), icon);
+        icon = TweetRenderer.createIcon(status.getUser().getProfileImageURL());
+        this.imageMap.put(status.getUser(), icon);
       }
       String resultText;
       //もしこのクライアントなら
-      if(TweetRenderer.source2clientName(tweetData.status.getSource()).equals(ClientModel.CLIENT_NAME) && this.mode!=Mode.NO_ENCRYPT ){
+      if(TweetRenderer.source2clientName(status.getSource()).equals(ClientModel.CLIENT_NAME) && this.mode!=Mode.NO_ENCRYPT ){
         //初期化
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-        String[] date = sdf.format(tweetData.status.getCreatedAt()).split("/");
+        String[] date = sdf.format(status.getCreatedAt()).split("/");
         this.initialize(Long.parseLong(date[0]), Integer.parseInt(date[1]));
         
         //スペースで分割
-        String[] targetList = tweetData.status.getText().split(" ");
+        String[] targetList = status.getText().split(" ");
         ArrayList<String> resultList=new ArrayList<String>();
         //もし@が入ってなければ復号化
         int count=0;
@@ -133,9 +136,9 @@ public class TweetRenderer extends MouseAdapter implements ListCellRenderer {
           resultText += aString;
         }
       }else{
-        resultText = tweetData.status.getText();
+        resultText = status.getText();
       }
-      this.tweet.setValues(tweetData.status,resultText,tweetData.model,icon,isSelected);
+      this.tweet.setValues(status,resultText,this.model,icon,isSelected);
      
     return this.tweet;
   }

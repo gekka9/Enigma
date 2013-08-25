@@ -92,7 +92,7 @@ public class MainFrame extends JFrame{
     CellButtonsMouseListener cbml = new CellButtonsMouseListener();
     list.addMouseListener(cbml);
     list.addMouseMotionListener(cbml);
-    this.list.setCellRenderer(new TweetRenderer(model.getMode()));
+    this.list.setCellRenderer(new TweetRenderer(this.model.getMode(),this.model));
     this.list.setEnabled(false);
     JScrollPane scrollPane = new JScrollPane(this.list);
     scrollPane.setPreferredSize(new Dimension(SCROLLPANE_WIDTH,SCROLLPANE_HEIGHT));
@@ -110,7 +110,7 @@ public class MainFrame extends JFrame{
    * @param status 新着ツイートのStatus
    */
   public void addPost(Status status){
-    this.listModel.add(0,new TweetData(status,this.model));
+    this.listModel.add(0,status);
   }
 
   /**
@@ -183,7 +183,7 @@ class CellButtonsMouseListener extends MouseAdapter{
   private JButton getButton(JList list, Point pt, int index) {
     System.out.println(pt);
       int cellIndex = list.locationToIndex(pt);
-      TweetData data= (TweetData) list.getModel().getElementAt(cellIndex);
+      Status data= (Status) list.getModel().getElementAt(cellIndex);
       Container c = (Container)list.getCellRenderer().getListCellRendererComponent(list, data, index, false, false);
       Rectangle r = list.getCellBounds(index, index);
       c.setBounds(r);
