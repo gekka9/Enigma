@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /**
  * 投稿を行うためのキーリスナー
- * @author otaki
+ * @author  gekka9
  *
  */
 public class Poster implements KeyListener{
