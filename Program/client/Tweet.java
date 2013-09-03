@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -172,14 +173,14 @@ public class Tweet extends JPanel{
     layout.setConstraints(console, c);
     this.add(console);
 
-    rtButton = new JButton(new ImageIcon("./gui/rt.png") );
+    rtButton = new JButton(new ImageIcon("gui"+File.separator+"rt.png") );
     rtButton.setEnabled(true);
     rtButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     rtButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     rtButton.addActionListener(new ReTweet());
     console.add(rtButton);
 
-    reButton = new JButton(new ImageIcon("./gui/re.png") );
+    reButton = new JButton(new ImageIcon("gui"+File.separator+"re.png") );
     reButton.setEnabled(true);
     reButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     reButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
@@ -187,14 +188,14 @@ public class Tweet extends JPanel{
     console.add(reButton);
     
 
-    favButton = new JButton(new ImageIcon("./gui/fav.png") );
+    favButton = new JButton(new ImageIcon("gui"+File.separator+"fav.png") );
     favButton.setEnabled(true);
     favButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     favButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     favButton.addActionListener(new Favorite());
     console.add(favButton);
     
-    otherButton = new JButton(new ImageIcon("./gui/other.png") );
+    otherButton = new JButton(new ImageIcon("gui"+File.separator+"other.png") );
     otherButton.setPreferredSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     otherButton.setMaximumSize(new Dimension(BUTTON_SIZE,BUTTON_SIZE));
     console.add(otherButton);  

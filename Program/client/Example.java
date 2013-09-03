@@ -40,6 +40,7 @@ public class Example
 {
   public static final String KEY = "5EHIcwWrFiKDJ19l2ceoDQ";
   public static final String SECRET = "yCm7uy1dJMUHG2HRYvozy5iuQ9WEuegssmlBpv6I4";
+  private static final Splash splash = new Splash();
   private Mode mode; 
   
   public static void main(String[] args) throws Exception{
@@ -47,6 +48,8 @@ public class Example
       System.setProperty("com.apple.mrj.application.apple.menu.about.name","Enigma");
       System.setProperty("apple.laf.useScreenMenuBar", "false");
     }
+
+    splash.setVisible(true);
     
     Mode mode=Mode.NORMAL;
     if(args.length>0){
@@ -64,7 +67,7 @@ public class Example
       System.out.println("start-up in normal mode");
     }
     
-    File newdir = new File("./resource");
+    File newdir = new File("resource");
     newdir.mkdir();
     Example stream = new Example(mode);
     stream.startUserStream();
@@ -146,7 +149,8 @@ public class Example
     twitterStream.addListener(new MyUserStreamAdapter(model));
     twitterStream.setOAuthAccessToken(accessToken);
     twitterStream.user();
-    
+    model.show();
+    splash.setVisible(false);
     return null;
   }
   

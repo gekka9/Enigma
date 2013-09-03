@@ -102,7 +102,7 @@ public class MainFrame extends JFrame{
     EnigmaMenu menu = new EnigmaMenu(listModel,this.model);
     this.setMenuBar(menu);
   
-    this.setVisible(true);
+    //this.setVisible(true);
   } 
 
   /**

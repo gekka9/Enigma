@@ -1,6 +1,8 @@
 package client;
 
 
+import java.io.File;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,7 +20,7 @@ public class VersionWindow extends JFrame{
     BoxLayout layout=new BoxLayout(info,BoxLayout.Y_AXIS);
     info.setLayout(layout);
     this.getContentPane().add(info);
-    info.add(new JLabel(new ImageIcon("./gui/logo.png")));
+    info.add(new JLabel(new ImageIcon("gui"+File.separator+"logo.png")));
     info.add(new JLabel(BASETEXT+VERSION, JLabel.CENTER));
     info.add(new JLabel(CREDIT, JLabel.CENTER));
     this.pack();

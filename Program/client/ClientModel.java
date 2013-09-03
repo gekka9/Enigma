@@ -120,4 +120,11 @@ public class ClientModel {
     String OSName = System.getProperty("os.name").toLowerCase();
     return OSName.startsWith("mac os x");
   }
+  
+  /**
+   * メインフレームを可視化する
+   */
+  public void show(){
+    this.frame.setVisible(true);
+  }
 }
