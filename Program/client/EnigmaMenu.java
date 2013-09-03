@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 
 import javax.swing.DefaultListModel;
 
@@ -49,9 +50,14 @@ class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
         menuFile.add(crearTweets);
         MenuItem clearAuthentication = new MenuItem("Clear Authentication");
         menuFile.add(clearAuthentication);
-
-        MenuItem decode = new MenuItem("Decode tweet");
-        menuFile.add(decode);
+        
+        // [File]
+        Menu help = new Menu("Help");
+        help.addActionListener(this);
+        this.add(help);
+        // [File]-[Open]
+        MenuItem version = new MenuItem("About this");
+        help.add(version);
     }
   
   /**
@@ -61,9 +67,15 @@ class EnigmaMenu extends MenuBar implements ActionListener, ItemListener {
       if(e.getActionCommand().equals("Clear Tweets")){
         this.listModel.clear();
       }else if(e.getActionCommand().equals("Clear Authentication")){
-        
+        File file = new File(ClientModel.ACCESS_FILENAME);
+        if (file.exists()){;
+          file.delete();
+        }
       }else if(e.getActionCommand().equals("Decode tweet")){
         new DecodeWindow(this.model);
+      }else if(e.getActionCommand().equals("About this")){
+        VersionWindow version = new VersionWindow();
+        version.setVisible(true);
       }
     }
     @Override

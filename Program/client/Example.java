@@ -40,7 +40,6 @@ public class Example
 {
   public static final String KEY = "5EHIcwWrFiKDJ19l2ceoDQ";
   public static final String SECRET = "yCm7uy1dJMUHG2HRYvozy5iuQ9WEuegssmlBpv6I4";
-  public static final String ACCESS_FILENAME="resource"+System.getProperty("line.separator")+"access.obj";
   private Mode mode; 
   
   public static void main(String[] args) throws Exception{
@@ -88,7 +87,7 @@ public class Example
     TwitterFactory factory = new TwitterFactory(conf);
     Twitter twitter= factory.getInstance(); 
     try{
-      ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ACCESS_FILENAME));
+      ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ClientModel.ACCESS_FILENAME));
       EnigmaToken enigmaToken = (EnigmaToken)ois.readObject();
       ois.close();
       accessToken = new AccessToken(enigmaToken.getToken(),enigmaToken.getSecret());
@@ -160,7 +159,7 @@ public class Example
     //accessToken.getTokenSecret() を保存
     ObjectOutputStream oos;
     try {
-      oos = new ObjectOutputStream(new FileOutputStream(ACCESS_FILENAME));
+      oos = new ObjectOutputStream(new FileOutputStream(ClientModel.ACCESS_FILENAME));
       EnigmaToken enigmaToken = new EnigmaToken(accessToken.getToken(),accessToken.getTokenSecret());
       oos.writeObject(enigmaToken);
     } catch (IOException e) {

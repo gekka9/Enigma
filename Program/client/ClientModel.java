@@ -1,5 +1,7 @@
 package client;
 
+import java.io.File;
+
 import twitter4j.Status;
 import twitter4j.Twitter;
 
@@ -9,6 +11,8 @@ import twitter4j.Twitter;
  *
  */
 public class ClientModel {
+
+  public static final String ACCESS_FILENAME="resource"+File.separator+"access.obj";
   
   /**
    * Twitterインスタンスを束縛する
