@@ -32,10 +32,10 @@ public class Poster implements KeyListener{
   public void keyPressed(KeyEvent e) {
     int key = e.getKeyCode();
     int mod = e.getModifiersEx();
-    if ((mod & InputEvent.META_DOWN_MASK) != 0 && key == KeyEvent.VK_ENTER){
+    if (ClientModel.isMac()&&(mod & InputEvent.META_DOWN_MASK) != 0 && key == KeyEvent.VK_ENTER){
       this.field.post();
-    }else if ((mod & InputEvent.META_DOWN_MASK) != 0 && (mod & InputEvent.SHIFT_DOWN_MASK) != 0 && key == KeyEvent.VK_ENTER){
-
+    }else if(!ClientModel.isMac()&&(mod & InputEvent.CTRL_DOWN_MASK) != 0 && key == KeyEvent.VK_ENTER){
+      this.field.post();
     }
   }
 

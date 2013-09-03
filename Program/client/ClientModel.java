@@ -107,4 +107,13 @@ public class ClientModel {
   public Mode getMode() {
     return mode;
   }
+  
+  /**
+   * MacOSXで動作しているかを返す
+   * @return MacOSXならtrue
+   */
+  protected static boolean isMac() {
+    String OSName = System.getProperty("os.name").toLowerCase();
+    return OSName.startsWith("mac os x");
+  }
 }

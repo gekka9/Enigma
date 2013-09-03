@@ -44,6 +44,11 @@ public class Example
   private Mode mode; 
   
   public static void main(String[] args) throws Exception{
+    if(ClientModel.isMac()){
+      System.setProperty("com.apple.mrj.application.apple.menu.about.name","Enigma");
+      System.setProperty("apple.laf.useScreenMenuBar", "false");
+    }
+    
     Mode mode=Mode.NORMAL;
     if(args.length>0){
       if(args[0].equals("-h") || args[0].equals("-help")){
@@ -188,7 +193,6 @@ class MyUserStreamAdapter extends UserStreamAdapter
 {
 
   private ClientModel model;
-  private int count=0; 
   
   /**
    * コンストラクタ
